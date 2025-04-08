@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - PsycheKinesis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00a8e8;
+            --primary-color-dark: #007bb5;
+        }
+        
+        .navbar, .footer {
+            background-color: var(--primary-color);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-color-dark);
+            border-color: var(--primary-color-dark);
+        }
+        
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background-color: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">PsycheKinesis: Administración</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card shadow">
+                    <div class="card-body p-4">
+                        <h2 class="text-center mb-4">Panel de Administración</h2>
+                        <p class="text-center">Aquí puedes gestionar a todos los usuarios, pacientes y profesionales.</p>
+
+                        <h4 class="mt-4">Accesos Rápidos</h4>
+                        <div class="list-group mb-4">
+                            <a href="inicio_roles.html" class="list-group-item list-group-item-action">📌 Gestionar Pacientes</a>
+                            <a href="inicio_profesional.html" class="list-group-item list-group-item-action">📌 Gestionar Profesionales</a>
+                            <a href="inicio.html" class="list-group-item list-group-item-action">📌 Gestionar Usuarios</a>
+                            <a href="reporte.html" class="list-group-item list-group-item-action">📊 Ver Reportes</a>
+                            <a href="configuracion.html" class="list-group-item list-group-item-action">⚙️ Configuración del Sistema</a>
+                        </div>
+
+                        <h4 class="mt-4">Resumen de Datos</h4>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card text-white bg-primary mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Pacientes Registrados</h5>
+                                        <p class="card-text" id="totalPacientes">0</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card text-white bg-success mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Profesionales Registrados</h5>
+                                        <p class="card-text" id="totalProfesionales">0</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card text-white bg-warning mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Usuarios Registrados</h5>
+                                        <p class="card-text" id="totalUsuarios">0</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4 class="mt-4">Listas de Datos</h4>
+                        <div class="accordion" id="accordionListas">
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#pacientesCollapse">
+                                        👨‍⚕️ Lista de Pacientes
+                                    </button>
+                                </h2>
+                                <div id="pacientesCollapse" class="accordion-collapse collapse" data-bs-parent="#accordionListas">
+                                    <div class="accordion-body">
+                                        <ul class="list-group" id="listaPacientes"></ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#profesionalesCollapse">
+                                        🩺 Lista de Profesionales
+                                    </button>
+                                </h2>
+                                <div id="profesionalesCollapse" class="accordion-collapse collapse" data-bs-parent="#accordionListas">
+                                    <div class="accordion-body">
+                                        <ul class="list-group" id="listaProfesionales"></ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#usuariosCollapse">
+                                        👤 Lista de Usuarios
+                                    </button>
+                                </h2>
+                                <div id="usuariosCollapse" class="accordion-collapse collapse" data-bs-parent="#accordionListas">
+                                    <div class="accordion-body">
+                                        <ul class="list-group" id="listaUsuarios"></ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer py-3 text-center text-white">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 PsycheKinesis. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Agregado Bootstrap JS para que funcionen los acordeones -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Datos de profesionales extraídos de la lista principal
+        const profesionales = [
+            { id: 1, nombre: "Dr. Juan Pérez", especialidad: "Psicología Clínica", experiencia: "10 años", pacientes: [1, 2] },
+            { id: 2, nombre: "Dra. María López", especialidad: "Psiquiatría", experiencia: "8 años", pacientes: [3, 4] },
+            { id: 3, nombre: "Lic. Pedro Gómez", especialidad: "Terapia Familiar", experiencia: "12 años", pacientes: [5, 6] },
+            { id: 4, nombre: "Dra. Ana Rodríguez", especialidad: "Neuropsicología", experiencia: "7 años", pacientes: [7, 8] }
+        ];
+
+        // Datos de pacientes asignados
+        const pacientes = [
+            { id: 1, nombre: "Juan Pérez", edad: 34, padecimiento: "Ansiedad Generalizada" },
+            { id: 2, nombre: "María Gómez", edad: 28, padecimiento: "Depresión Moderada" },
+            { id: 3, nombre: "Carlos Ramírez", edad: 45, padecimiento: "Trastorno del Sueño" },
+            { id: 4, nombre: "Ana Torres", edad: 38, padecimiento: "Estrés Postraumático" },
+            { id: 5, nombre: "Luis Méndez", edad: 50, padecimiento: "Problemas de Pareja" },
+            { id: 6, nombre: "Carmen Silva", edad: 30, padecimiento: "Conflictos Familiares" },
+            { id: 7, nombre: "Raúl Castillo", edad: 60, padecimiento: "Deterioro Cognitivo" },
+            { id: 8, nombre: "Paola Herrera", edad: 42, padecimiento: "Déficit de Atención" }
+        ];
+
+        const usuarios = [
+            { id: 1, nombre: "Emanuel logreira", rol: "Administrador" },
+            { id: 2, nombre: "Fabian Diaz", rol: "Administrador" },
+            { id: 3, nombre: "Jhonier Herrera", rol: "Administrador" },
+            { id: 4, nombre: "Brayan Fernandez", rol: "Usuario Estándar" }
+        ];
+
+        // Función para obtener el profesional asignado a un paciente
+        function getProfesionalPorPaciente(pacienteId) {
+            return profesionales.find(profesional => profesional.pacientes.includes(pacienteId));
+        }
+
+        // Actualizar contadores
+        document.getElementById("totalPacientes").textContent = pacientes.length;
+        document.getElementById("totalProfesionales").textContent = profesionales.length;
+        document.getElementById("totalUsuarios").textContent = usuarios.length;
+
+        // Poblar listas
+        // Lista de profesionales
+        const listaProfesionales = document.getElementById("listaProfesionales");
+        profesionales.forEach(p => {
+            const cantidadPacientes = p.pacientes ? p.pacientes.length : 0;
+            listaProfesionales.innerHTML += `
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span><strong>${p.nombre}</strong> - ${p.especialidad} (${p.experiencia}) - ${cantidadPacientes} pacientes</span>
+                    <a href="detalle_profesional.html?id=${p.id}" class="btn btn-sm btn-primary">Ver Detalle</a>
+                </li>`;
+        });
+
+        // Lista de usuarios
+        const listaUsuarios = document.getElementById("listaUsuarios");
+        usuarios.forEach(u => {
+            listaUsuarios.innerHTML += `
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span><strong>${u.nombre}</strong> - ${u.rol}</span>
+                    <a href="detalle_usuario.html?id=${u.id}" class="btn btn-sm btn-primary">Ver Detalle</a>
+                </li>`;
+        });
+
+        // Lista de pacientes
+        const listaPacientes = document.getElementById("listaPacientes");
+        pacientes.forEach(p => {
+            const profesional = getProfesionalPorPaciente(p.id);
+            const profesionalNombre = profesional ? profesional.nombre : "Sin asignar";
+            
+            listaPacientes.innerHTML += `
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span><strong>${p.nombre}</strong> (${p.edad} años) - ${p.padecimiento} - <small>Profesional: ${profesionalNombre}</small></span>
+                    <a href="seguimiento_pacientes.html?id=${p.id}" class="btn btn-sm btn-primary">Seguimiento</a>
+                </li>`;
+        });
+    </script>
+</body>
+</html>

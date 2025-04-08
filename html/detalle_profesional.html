@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Profesional - PsycheKinesis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00a8e8;
+            --primary-color-dark: #007bb5;
+        }
+        .navbar, .footer {
+            background-color: var(--primary-color);
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-color-dark);
+            border-color: var(--primary-color-dark);
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">PsycheKinesis: Detalles del Profesional</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container py-5">
+        <h2 class="text-center mb-4">Detalles del Profesional</h2>
+        <div id="infoProfesional">
+            <!-- Información del profesional cargada dinámicamente -->
+        </div>
+        <h4 class="mt-4">Pacientes Asignados</h4>
+        <table class="table table-striped mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Edad</th>
+                    <th>Padecimiento</th>
+                    <th>Seguimiento</th>
+                </tr>
+            </thead>
+            <tbody id="tablaPacientes">
+                <!-- Datos cargados dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+
+    <footer class="footer py-3 text-center text-white">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 PsycheKinesis. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Datos de profesionales extraídos de la lista principal
+        const profesionales = [
+            { id: 1, nombre: "Dr. Juan Pérez", especialidad: "Psicología Clínica", experiencia: "10 años", pacientes: [1, 2] },
+            { id: 2, nombre: "Dra. María López", especialidad: "Psiquiatría", experiencia: "8 años", pacientes: [3, 4] },
+            { id: 3, nombre: "Lic. Pedro Gómez", especialidad: "Terapia Familiar", experiencia: "12 años", pacientes: [5, 6] },
+            { id: 4, nombre: "Dra. Ana Rodríguez", especialidad: "Neuropsicología", experiencia: "7 años", pacientes: [7, 8] }
+        ];
+
+        // Datos de pacientes asignados
+        const pacientes = [
+            { id: 1, nombre: "Juan Pérez", edad: 34, padecimiento: "Ansiedad Generalizada" },
+            { id: 2, nombre: "María Gómez", edad: 28, padecimiento: "Depresión Moderada" },
+            { id: 3, nombre: "Carlos Ramírez", edad: 45, padecimiento: "Trastorno del Sueño" },
+            { id: 4, nombre: "Ana Torres", edad: 38, padecimiento: "Estrés Postraumático" },
+            { id: 5, nombre: "Luis Méndez", edad: 50, padecimiento: "Problemas de Pareja" },
+            { id: 6, nombre: "Carmen Silva", edad: 30, padecimiento: "Conflictos Familiares" },
+            { id: 7, nombre: "Raúl Castillo", edad: 60, padecimiento: "Deterioro Cognitivo" },
+            { id: 8, nombre: "Paola Herrera", edad: 42, padecimiento: "Déficit de Atención" }
+        ];
+
+        // Obtener el ID del profesional desde la URL
+        function getParameterByName(name, url = window.location.href) {
+            name = name.replace(/[[\]]/g, '\\$&');
+            const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        const profesionalId = parseInt(getParameterByName('id'));
+        const profesional = profesionales.find(p => p.id === profesionalId);
+
+        if (profesional) {
+            document.getElementById("infoProfesional").innerHTML = `
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3>${profesional.nombre}</h3>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Especialidad:</strong> ${profesional.especialidad}</p>
+                        <p><strong>Experiencia:</strong> ${profesional.experiencia}</p>
+                    </div>
+                </div>
+            `;
+
+            const tablaPacientes = document.getElementById("tablaPacientes");
+            profesional.pacientes.forEach(pacienteId => {
+                const paciente = pacientes.find(p => p.id === pacienteId);
+                if (paciente) {
+                    const fila = document.createElement("tr");
+                    fila.innerHTML = `
+                        <td>${paciente.id}</td>
+                        <td>${paciente.nombre}</td>
+                        <td>${paciente.edad}</td>
+                        <td>${paciente.padecimiento}</td>
+                        <td><a href="seguimiento_pacientes.html?id=${paciente.id}" class="btn btn-info btn-sm">Ver Seguimiento</a></td>
+                    `;
+                    tablaPacientes.appendChild(fila);
+                }
+            });
+        } else {
+            document.getElementById("infoProfesional").innerHTML = `
+                <div class="alert alert-warning">No se encontró información para el profesional con ID ${profesionalId}</div>
+            `;
+        }
+    </script>
+</body>
+</html>

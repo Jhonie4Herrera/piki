@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Usuario</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 id="tituloUsuario">Detalle del Usuario</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="detalleUsuario">
+                            <div class="text-center">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                                <p>Cargando información del usuario...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="inicio_admin.html" class="btn btn-secondary">Volver a la lista</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Base de datos simulada de usuarios
+        const usuarios = [
+            { id: 1, nombre: "Emanuel logreira", rol: "Administrador", email: "emanuel@gmail.com", departamento: "Tecnología", fechaRegistro: "15/01/2023", ultimoAcceso: "30/03/2025", permisos: ["Crear usuarios", "Editar usuarios", "Eliminar usuarios", "Gestionar roles"] },
+            { id: 2, nombre: "Fabian Diaz", rol: "Administrador", email: "fabian@gmail.com", departamento: "Tecnología", fechaRegistro: "15/01/2023", ultimoAcceso: "30/03/2025", permisos: ["Crear usuarios", "Editar usuarios", "Eliminar usuarios", "Gestionar roles"] },
+            { id: 1, nombre: "Jhonier Herrera", rol: "Administrador", email: "jhonier@gmail.com", departamento: "Tecnología", fechaRegistro: "15/01/2023", ultimoAcceso: "30/03/2025", permisos: ["Crear usuarios", "Editar usuarios", "Eliminar usuarios", "Gestionar roles"] },
+            { id: 4, nombre: "brayan fernandez", rol: "Usuario Estándar", email: "brayan@ejemplo.com", departamento: "call center", fechaRegistro: "05/03/2023", ultimoAcceso: "28/03/2025", permisos: ["Ver informes", "Crear tickets"] }
+        ];
+
+        // Función para obtener parámetros de la URL
+        function obtenerParametroURL(nombre) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(nombre);
+        }
+
+        // Función para mostrar los detalles del usuario
+        function mostrarDetalleUsuario() {
+            const userId = parseInt(obtenerParametroURL('id'));
+            const detalleUsuarioDiv = document.getElementById('detalleUsuario');
+            const tituloUsuario = document.getElementById('tituloUsuario');
+            
+            // Buscar el usuario por ID
+            const usuario = usuarios.find(u => u.id === userId);
+            
+            if (usuario) {
+                tituloUsuario.textContent = `Detalle de ${usuario.nombre}`;
+                
+                // Crear el contenido HTML para mostrar los detalles
+                let contenidoHTML = `
+                    <div class="row mb-3">
+                        <div class="col-md-4 text-muted">Nombre:</div>
+                        <div class="col-md-8"><strong>${usuario.nombre}</strong></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 text-muted">ID:</div>
+                        <div class="col-md-8">${usuario.id}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 text-muted">Rol:</div>
+                        <div class="col-md-8">
+                            <span class="badge bg-${usuario.rol === 'Administrador' ? 'danger' : 'info'}">${usuario.rol}</span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 text-muted">Email:</div>
+                        <div class="col-md-8">${usuario.email}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 text-muted">Departamento:</div>
+                        <div class="col-md-8">${usuario.departamento}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 text-muted">Fecha de registro:</div>
+                        <div class="col-md-8">${usuario.fechaRegistro}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 text-muted">Último acceso:</div>
+                        <div class="col-md-8">${usuario.ultimoAcceso}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 text-muted">Permisos:</div>
+                        <div class="col-md-8">
+                            <ul class="list-group">
+                                ${usuario.permisos.map(permiso => `<li class="list-group-item">${permiso}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+                
+                detalleUsuarioDiv.innerHTML = contenidoHTML;
+            } else {
+                detalleUsuarioDiv.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">¡Usuario no encontrado!</h4>
+                        <p>No se encontró ningún usuario con el ID: ${userId}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Ejecutar la función cuando se cargue la página
+        window.onload = mostrarDetalleUsuario;
+    </script>
+</body>
+</html>

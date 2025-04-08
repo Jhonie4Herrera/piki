@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursos - PsycheKinesis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar, footer {
+            background-color: #00a8e8;
+        }
+        .resource-card {
+            transition: transform 0.3s;
+            height: 100%;
+        }
+        .resource-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <nav class="navbar navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">PsycheKinesis</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">Recursos disponibles</h2>
+                        <p class="card-text">Explora estos recursos diseñados para mejorar tu bienestar emocional.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4 mb-5">
+            <!-- Tarjeta de Infografía -->
+            <div class="col-md-6 d-flex">
+                <div class="card shadow resource-card w-100">
+                    <div class="card-body text-center">
+                        <h4>Infografía sobre el manejo del estrés</h4>
+                        <img src="imagenes/Infograf.jpg" alt="Infografía Estrés" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Tarjeta de Escritura Terapéutica -->
+            <div class="col-md-6 d-flex">
+                <div class="card shadow resource-card w-100">
+                    <div class="card-body text-center">
+                        <h4>Ejercicio de escritura terapéutica</h4>
+                        <p>Escribe una carta a tu "yo del futuro" expresando tus pensamientos y emociones.</p>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#writingModal">
+                            Escribir Carta
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal (fuera de la tarjeta) -->
+        <div class="modal fade" id="writingModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel">Tu Carta al Futuro</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea id="writingArea" class="form-control" rows="6" placeholder="Escribe tu carta aquí..."></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" id="saveLetter">Guardar Carta</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+           
+            
+        <div class="row g-4 mb-5">
+            <div class="col-md-6">
+                <div class="card shadow resource-card">
+                    <div class="card-body">
+                        <h4 class="text-center">Cuestionario de bienestar emocional</h4>
+                        <a href="cuestionario.html" class="btn btn-primary d-block">Realizar Test</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow resource-card">
+                    <div class="card-body">
+                        <h4 class="text-center">Reto semanal: Práctica de gratitud</h4>
+                        <p class="text-center">Cada día, escribe 3 cosas por las que estés agradecido.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="py-3 text-center text-white mt-5">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 PsycheKinesis. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

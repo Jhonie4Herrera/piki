@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursos - PsycheKinesis</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optional custom CSS to maintain branding elements -->
+    <style>
+        .navbar, footer {
+            background-color: #00a8e8;
+        }
+        .resource-card {
+            transition: transform 0.3s;
+            height: 100%;
+        }
+        .resource-card:hover {
+            transform: translateY(-5px);
+        }
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            overflow: hidden;
+        }
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">Recursos - PsycheKinesis</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="inicio.html">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="bienestar.html">Bienestar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="chatbot.html">Chatbot</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contactos.html">Contactos de Emergencia</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="nosotros.html">Nosotros</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="pregfrecu.html">Preguntas Frecuentes</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">Recursos disponibles</h2>
+                        <p class="card-text">A continuación, se presentan algunos recursos útiles para mejorar tu bienestar emocional:</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4 mb-5">
+            <div class="col-md-6">
+                <div class="card shadow resource-card">
+                    <div class="card-body">
+                        <div class="iframe-container mb-3">
+                            <iframe src="https://www.youtube.com/embed/IShkpOm63gg" allowfullscreen></iframe>
+                        </div>
+                        <p class="card-text text-center">Video de relajación guiada</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow resource-card">
+                    <div class="card-body">
+                        <div class="iframe-container mb-3">
+                            <iframe src="https://www.youtube.com/embed/DNrnDx-KZUY" allowfullscreen></iframe>
+                        </div>
+                        <p class="card-text text-center">Audio de meditación</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title">Más información:</h3>
+                        
+                        <div class="mb-3">
+                            <p class="mb-1">Si quieres saber un poco qué es la depresión:</p>
+                            <a href="https://www.psychiatry.org/patients-families/la-salud-mental/depresion" target="_blank" class="btn btn-outline-primary">Psychiatry</a>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <p class="mb-1">Si necesitas una consulta psicológica te recomendamos:</p>
+                            <a href="https://www.menteamente.com/web-salud-mental" target="_blank" class="btn btn-outline-primary">Web salud mental</a>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <p class="mb-1">Si desea saber un poco más acerca de la ansiedad:</p>
+                            <a href="https://www.psychiatry.org/patients-families/la-salud-mental/ansiedad" target="_blank" class="btn btn-outline-primary">Psychiatry</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="py-3 text-center text-white mt-5">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 PsycheKinesis. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

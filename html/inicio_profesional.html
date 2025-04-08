@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio Profesional - PsycheKinesis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00a8e8;
+            --primary-color-dark: #007bb5;
+        }
+        
+        .navbar, .footer {
+            background-color: var(--primary-color);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-color-dark);
+            border-color: var(--primary-color-dark);
+        }
+        
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">PsycheKinesis: Área Profesional</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card shadow">
+                    <div class="card-body p-4">
+                        <h2 class="text-center mb-4">Bienvenido Dr. <span id="nombre"></span></h2>
+                        <p class="text-center">Aquí puedes ver a tus pacientes y gestionar sus casos.</p>
+
+                        <h4 class="mt-4">Lista de Pacientes</h4>
+                        <table class="table table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Edad</th>
+                                    <th>Padecimiento</th>
+                                    <th>Atendido</th>
+                                    <th>Seguimiento</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listaPacientes"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer py-3 text-center text-white">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 PsycheKinesis. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById("nombre").textContent = localStorage.getItem("nombre") || "Profesional";
+
+        const pacientes = [
+            { id: 1, nombre: "Juan Pérez", edad: 34, caso: "Ansiedad Generalizada", atendido: "No", historial: "Cita inicial el 10/03/2025, pendiente evaluación.", proxima: "15/04/2025" },
+            { id: 2, nombre: "María Gómez", edad: 28, caso: "Depresión Moderada", atendido: "Sí", historial: "Evaluación el 02/03/2025, en tratamiento.", proxima: "20/04/2025" },
+            { id: 3, nombre: "Carlos Ramírez", edad: 45, caso: "Trastorno del Sueño", atendido: "No", historial: "Consulta el 05/03/2025, pendiente seguimiento.", proxima: "18/04/2025" },
+            { id: 4, nombre: "Ana Torres", edad: 38, caso: "Estrés Postraumático", atendido: "Sí", historial: "Terapia iniciada el 12/02/2025, progresando bien.", proxima: "22/04/2025" },
+            { id: 5, nombre: "Luis Méndez", edad: 50, caso: "Ansiedad", atendido: "No", historial: "Evaluación pendiente.", proxima: "25/04/2025" },
+            { id: 6, nombre: "Carmen Silva", edad: 30, caso: "Depresión", atendido: "Sí", historial: "Terapia en curso, cita el 05/03/2025.", proxima: "28/04/2025" },
+            { id: 7, nombre: "Raúl Castillo", edad: 60, caso: "Estrés", atendido: "No", historial: "Consulta inicial agendada.", proxima: "30/04/2025" },
+            { id: 8, nombre: "Paola Herrera", edad: 42, caso: "Déficit de Atención", atendido: "Sí", historial: "Terapia en curso desde enero.", proxima: "02/05/2025" }
+        ];
+
+        const listaPacientes = document.getElementById("listaPacientes");
+
+        pacientes.forEach(paciente => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+                <td>${paciente.id}</td>
+                <td>${paciente.nombre}</td>
+                <td>${paciente.edad}</td>
+                <td>${paciente.caso}</td>
+                <td>${paciente.atendido}</td>
+                <td>
+                    <button class="btn btn-info btn-sm" onclick='verSeguimiento(${JSON.stringify(paciente)})'>📋 Ver</button>
+                </td>
+            `;
+            listaPacientes.appendChild(fila);
+        });
+
+        function verSeguimiento(paciente) {
+            alert(`Historial de ${paciente.nombre}:
+${paciente.historial}
+
+Próxima cita: ${paciente.proxima}`);
+        }
+    </script>
+</body>
+</html>

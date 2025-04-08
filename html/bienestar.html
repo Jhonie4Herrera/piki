@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PsycheKinesis - Bienestar</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles that override Bootstrap -->
+    <style>
+        :root {
+            --primary-color: #00a8e8;
+            --primary-color-dark: #007bb5;
+        }
+        
+        .navbar, .footer {
+            background-color: var(--primary-color);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-color-dark);
+            border-color: var(--primary-color-dark);
+        }
+        
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        .recurso-card {
+            transition: transform 0.3s;
+        }
+        
+        .recurso-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">PsycheKinesis</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="inicio.html">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="chatbot.html">Chatbot</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contactos.html">Contactos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="nosotros.html">Nosotros</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contactos.html">Recursos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="pregfrecu.html">Preguntas Frecuentes</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <h2 class="text-center mb-4">Bienestar Emocional</h2>
+                        
+                        <h3 class="mb-3">Recursos</h3>
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <div class="card h-100 recurso-card">
+                                    <div class="card-body text-center">
+                                        <img src="/api/placeholder/400/320" alt="Video de relajación" class="img-fluid mb-3">
+                                        <p class="card-text">Video de relajación guiada</p>
+                                        <a href="https://youtu.be/O6tJJZ23ZaA" class="btn btn-sm btn-primary" target="_blank">Ver video</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card h-100 recurso-card">
+                                    <div class="card-body text-center">
+                                        <img src="/api/placeholder/400/320" alt="Audio de meditación" class="img-fluid mb-3">
+                                        <p class="card-text">Audio de meditación</p>
+                                        <a href="https://youtu.be/22i6SofLVRY" class="btn btn-sm btn-primary" target="_blank">Escuchar audio</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card h-100 recurso-card">
+                                    <div class="card-body text-center">
+                                        <img src="/api/placeholder/400/320" alt="Libro de autoayuda" class="img-fluid mb-3">
+                                        <p class="card-text">Libro de autoayuda</p>
+                                        <a href="https://grupoetapas.com.ar/wp-content/uploads/2020/07/Sal-de-tu-mente-entra-en-tu-vida.pdf" class="btn btn-sm btn-primary" target="_blank">Descargar PDF</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer py-3 text-center text-white">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 PsycheKinesis. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../java/java.js"></script>
+</body>
+</html>

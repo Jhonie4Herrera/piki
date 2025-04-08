@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuestionario de Bienestar Emocional</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #00a8e8;
+        }
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+        }
+        .card {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">PsycheKinesis</a>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="card shadow">
+            <h2 class="text-center">Cuestionario de Bienestar Emocional</h2>
+            <p class="text-center">Responde estas preguntas para evaluar tu bienestar emocional.</p>
+            <form id="quiz-form">
+                <div class="mb-3">
+                    <label class="form-label">1. ¿Te has sentido triste o sin esperanza en los últimos días?</label>
+                    <select class="form-control" name="pregunta1">
+                        <option value="0">Nunca</option>
+                        <option value="1">A veces</option>
+                        <option value="2">Frecuentemente</option>
+                        <option value="3">Siempre</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">2. ¿Tienes dificultades para dormir o duermes demasiado?</label>
+                    <select class="form-control" name="pregunta2">
+                        <option value="0">Nunca</option>
+                        <option value="1">A veces</option>
+                        <option value="2">Frecuentemente</option>
+                        <option value="3">Siempre</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">3. ¿Te has sentido sin energía o fatigado?</label>
+                    <select class="form-control" name="pregunta3">
+                        <option value="0">Nunca</option>
+                        <option value="1">A veces</option>
+                        <option value="2">Frecuentemente</option>
+                        <option value="3">Siempre</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">4. ¿Te cuesta concentrarte en tareas diarias?</label>
+                    <select class="form-control" name="pregunta4">
+                        <option value="0">Nunca</option>
+                        <option value="1">A veces</option>
+                        <option value="2">Frecuentemente</option>
+                        <option value="3">Siempre</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary w-100" onclick="calcularResultado()">Ver Resultado</button>
+            </form>
+            <div id="resultado" class="mt-4 text-center"></div>
+        </div>
+    </div>
+    <script>
+        function calcularResultado() {
+            let total = 0;
+            const respuestas = document.querySelectorAll("select");
+            respuestas.forEach(select => {
+                total += parseInt(select.value);
+            });
+            
+            let mensaje = "";
+            if (total <= 3) {
+                mensaje = "Tu bienestar emocional es bueno. Sigue cuidándote.";
+            } else if (total <= 6) {
+                mensaje = "Podrías estar experimentando algo de estrés. Considera practicar la relajación y el autocuidado.";
+            } else {
+                mensaje = "Es recomendable que hables con un profesional de la salud mental para recibir apoyo adecuado.";
+            }
+            
+            document.getElementById("resultado").innerHTML = `<div class='alert alert-info'>${mensaje}</div>`;
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

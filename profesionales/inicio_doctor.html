@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PsycheKinesis</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .navbar {
+            background-color: #00a8e8;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: white;
+        }
+        .nav-link, .navbar-nav .nav-link.active {
+            color: rgba(255,255,255,0.9);
+        }
+        .nav-link:hover {
+            color: white;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand">
+                    <i class="fas fa-brain me-2"></i>PsycheKinesis
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/html/inicio.html">Inicio</a>
+
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-1"></i> <span id="nombreUsuario">Cargando...</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="plataforma_doctor.html"><i class="fas fa-user-cog me-2"></i>inicio</a></li>
+                                <li><a class="dropdown-item" href="ingreso.html" id="logoutButton"><i class="fas fa-sign-out-alt me-2"></i>Cerrar sesión</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <script src="funciones.js"></script>
+    
+
+    <div class="container my-5">
+        <h1>Bienvenido a PsycheKinesis</h1>
+        <p>Sistema de gestión para profesionales de la psicología.</p>
+    </div>
+
+    <!-- Bootstrap JS with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Script para personalizar el nombre de usuario (ejemplo)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Aquí puedes colocar código para obtener el nombre del usuario desde una API o localStorage
+            const nombreUsuario = localStorage.getItem('nombreUsuario') || 'Dr. ';
+            document.getElementById('nombreUsuario').textContent = nombreUsuario;
+            
+            // Activar los tooltips de Bootstrap (si los usas)
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+        });
+    </script>
+</body>
+</html>

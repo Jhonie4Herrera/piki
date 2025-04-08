@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PsycheKinesis - Estadísticas</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.css" rel="stylesheet">
+    <style>
+        .navbar {
+            background-color: #00a8e8;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: white;
+        }
+        .nav-link, .navbar-nav .nav-link.active {
+            color: rgba(255,255,255,0.9);
+        }
+        .nav-link:hover {
+            color: white;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-card {
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+        .stat-card-primary {
+            border-left-color: #00a8e8;
+        }
+        .stat-card-success {
+            border-left-color: #28a745;
+        }
+        .stat-card-info {
+            border-left-color: #17a2b8;
+        }
+        .stat-card-warning {
+            border-left-color: #ffc107;
+        }
+        .stat-icon {
+            font-size: 2rem;
+            opacity: 0.7;
+        }
+        .stat-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: #6c757d;
+        }
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        .progress-label {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .tab-content {
+            padding: 20px;
+        }
+        .nav-pills .nav-link.active {
+            background-color: #00a8e8;
+        }
+        .nav-pills .nav-link {
+            color: #00a8e8;
+        }
+        .datatable-container {
+            overflow-x: auto;
+        }
+        .trend-indicator {
+            font-size: 0.8rem;
+            margin-left: 8px;
+        }
+        .trend-up {
+            color: #28a745;
+        }
+        .trend-down {
+            color: #dc3545;
+        }
+        .trend-neutral {
+            color: #6c757d;
+        }
+        .data-filter {
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand">
+                    <i class="fas fa-brain me-2"></i>PsycheKinesis 
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="inicio_doctor.html"><i class="fas fa-home me-1"></i> Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="agenda.html"><i class="fas fa-calendar-alt me-1"></i> Agenda</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-circle me-1"></i> <span id="nombreUsuario">Dr. </span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="plataforma_doctor.html"><i class="fas fa-user-cog me-2"></i>Perfil</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Configuración</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Cerrar sesión</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container my-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="fas fa-chart-line me-2 text-primary"></i> Estadísticas</h1>
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-primary active">Mes actual</button>
+                <button type="button" class="btn btn-outline-primary">Último trimestre</button>
+                <button type="button" class="btn btn-outline-primary">Último año</button>
+                <button type="button" class="btn btn-outline-primary">
+                    <i class="fas fa-calendar me-1"></i> Personalizado
+                </button>
+            </div>
+        </div>
+
+        <div class="data-filter mb-4">
+            <div class="row">
+                <div class="col-md-3 mb-2">
+                    <label for="filterMonth" class="form-label">Mes</label>
+                    <select class="form-select" id="filterMonth">
+                        <option value="4" selected>Abril</option>
+                        <option value="3">Marzo</option>
+                        <option value="2">Febrero</option>
+                        <option value="1">Enero</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label for="filterYear" class="form-label">Año</label>
+                    <select class="form-select" id="filterYear">
+                        <option value="2025" selected>2025</option>
+                        <option value="2024">2024</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label for="filterType" class="form-label">Tipo de consulta</label>
+                    <select class="form-select" id="filterType">
+                        <option value="all" selected>Todos</option>
+                        <option value="primera">Primera consulta</option>
+                        <option value="seguimiento">Seguimiento</option>
+                        <option value="evaluacion">Evaluación</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label class="form-label">&nbsp;</label>
+                    <button class="btn btn-primary w-100" id="applyFilter">
+                        <i class="fas fa-filter me-1"></i> Aplicar filtros
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cards de resumen -->
+        <div class="row mb-4">
+            <div class="col-xl-3 col-md-6 mb-3">
+                <div class="card stat-card stat-card-primary h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <div class="stat-title">Total consultas</div>
+                                <div class="stat-value">124</div>
+                                <div class="text-muted small">
+                                    <span class="trend-indicator trend-up">
+                                        <i class="fas fa-arrow-up"></i> 12%
+                                    </span>
+                                    vs. mes anterior
+                                </div>
+                            </div>
+                            <div class="stat-icon text-primary">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-3">
+                <div class="card stat-card stat-card-success h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <div class="stat-title">Tasa de asistencia</div>
+                                <div class="stat-value">92%</div>
+                                <div class="text-muted small">
+                                    <span class="trend-indicator trend-up">
+                                        <i class="fas fa-arrow-up"></i> 3%
+                                    </span>
+                                    vs. mes anterior
+                                </div>
+                            </div>
+                            <div class="stat-icon text-success">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-3">
+                <div class="card stat-card stat-card-info h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <div class="stat-title">Nuevos pacientes</div>
+                                <div class="stat-value">18</div>
+                                <div class="text-muted small">
+                                    <span class="trend-indicator trend-neutral">
+                                        <i class="fas fa-equals"></i> 0%
+                                    </span>
+                                    vs. mes anterior
+                                </div>
+                            </div>
+                            <div class="stat-icon text-info">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pestañas para diferentes gráficos -->
+        <ul class="nav nav-pills mb-3" id="stats-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="visits-tab" data-bs-toggle="pill" data-bs-target="#visits" type="button" role="tab">
+                    <i class="fas fa-calendar-check me-1"></i> Consultas
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="patients-tab" data-bs-toggle="pill" data-bs-target="#patients" type="button" role="tab">
+                    <i class="fas fa-users me-1"></i> Pacientes
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="diagnosis-tab" data-bs-toggle="pill" data-bs-target="#diagnosis" type="button" role="tab">
+                    <i class="fas fa-stethoscope me-1"></i> Diagnósticos
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="stats-tabContent">
+            <!-- Pestaña de Consultas -->
+            <div class="tab-pane fade show active" id="visits" role="tabpanel">
+                <div class="row">
+                    <div class="col-xl-8 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title mb-0">Consultas por Mes</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="visitsChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title mb-0">Tipos de Consulta</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="visitTypesChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-light d-flex justify-content-between">
+                                <h5 class="card-title mb-0">Historial de Consultas</h5>
+                                <div>
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-download me-1"></i> Exportar
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="datatable-container">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha</th>
+                                                <th>Paciente</th>
+                                                <th>Tipo</th>
+                                                <th>Estado</th>
+                                                <th>Duración</th>
+                                                <th>Importe</th>
+                                            </tr>
+                                        </thead>
+                                        
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pestaña de Pacientes -->
+            <div class="tab-pane fade" id="patients" role="tabpanel">
+                <div class="row">
+                    <div class="col-xl-6 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title mb-0">Distribución por Edad</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="ageDistributionChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title mb-0">Distribución por Género</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="genderDistributionChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title mb-0">Retención de Pacientes</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="patientRetentionChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pestaña de Diagnósticos -->
+            <div class="tab-pane fade" id="diagnosis" role="tabpanel">
+                <div class="row">
+                    <div class="col-xl-6 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title mb-0">Diagnósticos Frecuentes</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="diagnosisChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title mb-0">Evolución Diagnósticos</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="diagnosisEvolutionChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title mb-0">Efectividad de Tratamientos</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="treatmentEffectivenessChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Obtener nombre de usuario del localStorage
+            const nombreUsuario = localStorage.getItem('nombreUsuario') || 'Dr. Usuario';
+            document.getElementById('nombreUsuario').textContent = nombreUsuario;
+    
+            // Gráfico de consultas por mes
+            var visitsCtx = document.getElementById('visitsChart').getContext('2d');
+            var visitsChart = new Chart(visitsCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Nov', 'Dic', 'Ene', 'Feb', 'Mar', 'Abr'],
+                    datasets: [{
+                        label: 'Total Consultas',
+                        data: [85, 78, 96, 110, 112, 124],
+                        backgroundColor: 'rgba(74, 44, 143, 0.2)',
+                        borderColor: 'rgba(74, 44, 143, 1)',
+                        borderWidth: 2,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                drawBorder: false
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+    
+            // Gráfico de tipos de consulta
+            var visitTypesCtx = document.getElementById('visitTypesChart').getContext('2d');
+            var visitTypesChart = new Chart(visitTypesCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Primera consulta', 'Seguimiento', 'Evaluación', 'Terapia de emergencia'],
+                    datasets: [{
+                        data: [18, 85, 15, 6],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(75, 192, 192, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+    
+            // Gráfico de distribución por edad
+            var ageDistributionCtx = document.getElementById('ageDistributionChart').getContext('2d');
+            var ageDistributionChart = new Chart(ageDistributionCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['18-25', '26-35', '36-45', '46-55', '56-65', '65+'],
+                    datasets: [{
+                        label: 'Pacientes por grupo de edad',
+                        data: [12, 28, 35, 18, 14, 7],
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+    
+            // Gráfico de distribución por género
+            var genderDistributionCtx = document.getElementById('genderDistributionChart').getContext('2d');
+            var genderDistributionChart = new Chart(genderDistributionCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Mujeres', 'Hombres', 'No binario'],
+                    datasets: [{
+                        data: [63, 35, 2],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',     // Mujeres
+                            'rgba(54, 162, 235, 0.7)',     // Hombres
+                            'rgba(255, 206, 86, 0.7)'      // No binario
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Distribución por Género',
+                            font: {
+                                size: 16
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+    
