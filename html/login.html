@@ -23,12 +23,25 @@
                                 <input type="password" class="form-control" id="password" required>
                             </div>
                             <div class="mb-3">
+                                <label for="sexo" class="form-label">Sexo:</label>
+                                <select class="form-control" id="sexo" required>
+                                    <option value="" disabled selected>Selecciona una opción</option>
+                                    <option value="masculino">Masculino</option>
+                                    <option value="femenino">Femenino</option>
+                                    <option value="otro">Otro</option>
+                                    <option value="prefiero_no_decir">Prefiero no decir</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edad" class="form-label">Edad:</label>
+                                <input type="number" class="form-control" id="edad" min="1" max="120" required>
+                            </div>
+                            <div class="mb-3">
                                 <label for="role" class="form-label">Selecciona tu rol:</label>
                                 <select class="form-control" id="role" required>
-                                    <option value="administrador">Administrador</option>
-                                    <option value="paciente">Paciente</option>
-                                    <option value="profesional">Profesional</option>
-                                    <option value="usuario">usuario</option>
+                                    <option value="paciente">Usuario</option>
+                                    <option value="profesional">paciente</option>
+                                    <option value="usuario">Profesional</option>
                                 </select>
                             </div>
                             <div class="d-grid">
@@ -37,7 +50,7 @@
                         </form>
 
                         <div class="text-center mt-4">
-                            <a href="index.html" class="btn btn-outline-secondary">Volver al inicio</a>
+                            <a href="ingreso.html" class="btn btn-outline-secondary">Volver al inicio</a>
                         </div>
                     </div>
                 </div>

@@ -1,3 +1,9 @@
+
+
+
+//java para cerrar sección, para agregr pacinte, para colocar el nombre del profesional.
+
+
 document.addEventListener("DOMContentLoaded", () => {
     const nombreUsuario = document.getElementById("nombreUsuario");
     const usuario = localStorage.getItem("usuario") || "Dr. Usuario";

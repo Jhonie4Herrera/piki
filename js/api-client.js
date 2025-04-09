@@ -1,7 +1,7 @@
 // api-client.js - Cliente JavaScript para consumir la API de FastAPI
 
 // URL base de la API
-const API_BASE_URL = 'http://localhost:127.0.0.1';
+const API_BASE_URL = 'http://127.0.0.1:8000';
 
 // Clase para manejar todas las operaciones de la API
 class ApiClient {
