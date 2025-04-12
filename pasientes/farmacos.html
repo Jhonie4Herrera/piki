@@ -1,0 +1,543 @@
+<<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Fármacos y Recordatorios | PsycheKinesis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a2e0bf0a2e.js" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --primary: #00a8e8;
+            --secondary: #6c757d;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f5ff;
+            background-image: 
+                radial-gradient(at 80% 0%, rgba(0, 168, 232, 0.06) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, rgba(16, 215, 152, 0.05) 0px, transparent 50%);
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background-color: var(--primary);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .medication-card {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 8px 24px rgba(149, 157, 165, 0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .medication-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(149, 157, 165, 0.2);
+        }
+        
+        .card-header {
+            border-bottom: none;
+            background: linear-gradient(135deg, var(--primary) 0%, #0077b6 100%);
+            color: white;
+            padding: 1.25rem;
+        }
+        
+        .list-group-item {
+            padding: 1.25rem;
+            border-left: none;
+            border-right: none;
+            transition: background-color 0.2s;
+        }
+        
+        .list-group-item:hover {
+            background-color: rgba(0, 168, 232, 0.03);
+        }
+        
+        .med-icon {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(0, 168, 232, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .pill-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(40, 167, 69, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--success);
+            font-size: 1.2rem;
+            margin-right: 15px;
+        }
+        
+        .time-badge {
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-weight: 500;
+            margin-right: 8px;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        
+        .status-active {
+            background-color: var(--success);
+        }
+        
+        .status-pending {
+            background-color: var(--warning);
+        }
+        
+        .progress-ring {
+            width: 60px;
+            height: 60px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .progress-ring-circle {
+            stroke: var(--success);
+            fill: transparent;
+            stroke-width: 6;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        
+        .progress-ring-circle-bg {
+            stroke: #e9ecef;
+        }
+        
+        .btn-back {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+        }
+        
+        .reminder-tag {
+            background-color: rgba(0, 168, 232, 0.1);
+            color: var(--primary);
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .info-card {
+            border-radius: 12px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .section-title {
+            font-weight: 600;
+            color: #495057;
+            position: relative;
+            padding-left: 15px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 5px;
+            background-color: var(--primary);
+            border-radius: 20px;
+        }
+        
+        .accordion-item {
+            border: none;
+            margin-bottom: 10px;
+            border-radius: 10px !important;
+            overflow: hidden;
+        }
+        
+        .accordion-button {
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: none;
+        }
+        
+        .accordion-button:not(.collapsed) {
+            color: var(--primary);
+            background-color: rgba(0, 168, 232, 0.05);
+        }
+        
+        .accordion-button:focus {
+            box-shadow: none;
+        }
+        
+        .reminder-action {
+            color: var(--secondary);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .reminder-action:hover {
+            color: var(--primary);
+        }
+        
+        @media (max-width: 768px) {
+            .med-details {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            
+            .med-info {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Botón Volver -->
+    <div class="container py-5 mt-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <!-- Encabezado -->
+                <div class="d-flex align-items-center mb-4">
+                    <div class="med-icon me-3">
+                        <i class="fas fa-pills"></i>
+                    </div>
+                    <div>
+                        <h2 class="mb-0">Mis Medicamentos</h2>
+                        <p class="text-muted mb-0">Administra tu tratamiento farmacológico</p>
+                    </div>
+                </div>
+
+                <!-- Resumen -->
+                <div class="row mb-4">
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="card info-card h-100">
+                            <div class="card-body text-center">
+                                <h6 class="text-muted mb-2">Adherencia al tratamiento</h6>
+                                <div class="d-flex justify-content-center mb-2">
+                                    <div class="progress-ring">
+                                        <svg width="60" height="60">
+                                            <circle class="progress-ring-circle-bg" cx="30" cy="30" r="25"></circle>
+                                            <circle class="progress-ring-circle" cx="30" cy="30" r="25" stroke-dasharray="157" stroke-dashoffset="31.4"></circle>
+                                            <text x="30" y="35" text-anchor="middle" font-size="14" font-weight="bold" fill="#28a745">80%</text>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <p class="small text-muted">Último mes</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="card info-card h-100">
+                            <div class="card-body text-center">
+                                <h6 class="text-muted mb-3">Próxima dosis</h6>
+                                <h3 class="text-primary">10:00 PM</h3>
+                                <p class="small text-muted">Escitalopram 10mg</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card info-card h-100">
+                            <div class="card-body text-center">
+                                <h6 class="text-muted mb-3">Última actualización</h6>
+                                <h5>05 Abril 2025</h5>
+                                <p class="small text-muted">Por Dra. María González</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta de medicamentos -->
+                <div class="card medication-card mb-4">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0"><i class="fas fa-prescription-bottle-alt me-2"></i>Tratamiento Actual</h5>
+                            <span class="badge bg-light text-primary">3 medicamentos activos</span>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="d-flex align-items-center med-details justify-content-between">
+                                    <div class="d-flex align-items-center med-info">
+                                        <div class="pill-icon">
+                                            <i class="fas fa-capsules"></i>
+                                        </div>
+                                        <div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <span class="status-indicator status-active"></span>
+                                                <h5 class="mb-0">Sertralina 50mg</h5>
+                                            </div>
+                                            <p class="text-muted mb-2">Antidepresivo ISRS</p>
+                                            <div class="d-flex flex-wrap">
+                                                <span class="time-badge bg-primary text-white me-2 mb-2">
+                                                    <i class="far fa-clock me-1"></i>08:00 AM
+                                                </span>
+                                                <span class="time-badge bg-light text-dark mb-2">
+                                                    <i class="fas fa-utensils me-1"></i>Con desayuno
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="med-actions">
+                                        <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="tooltip" title="Ver detalles">
+                                            <i class="fas fa-info-circle"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success" data-bs-toggle="tooltip" title="Marcar como tomado">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="d-flex align-items-center med-details justify-content-between">
+                                    <div class="d-flex align-items-center med-info">
+                                        <div class="pill-icon">
+                                            <i class="fas fa-tablets"></i>
+                                        </div>
+                                        <div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <span class="status-indicator status-active"></span>
+                                                <h5 class="mb-0">Escitalopram 10mg</h5>
+                                            </div>
+                                            <p class="text-muted mb-2">Antidepresivo ISRS</p>
+                                            <div class="d-flex flex-wrap">
+                                                <span class="time-badge bg-primary text-white me-2 mb-2">
+                                                    <i class="far fa-clock me-1"></i>10:00 PM
+                                                </span>
+                                                <span class="time-badge bg-light text-dark mb-2">
+                                                    <i class="fas fa-moon me-1"></i>Antes de dormir
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="med-actions">
+                                        <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="tooltip" title="Ver detalles">
+                                            <i class="fas fa-info-circle"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success" data-bs-toggle="tooltip" title="Marcar como tomado">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="d-flex align-items-center med-details justify-content-between">
+                                    <div class="d-flex align-items-center med-info">
+                                        <div class="pill-icon" style="background-color: rgba(255, 193, 7, 0.1); color: var(--warning);">
+                                            <i class="fas fa-pills"></i>
+                                        </div>
+                                        <div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <span class="status-indicator status-pending"></span>
+                                                <h5 class="mb-0">Clonazepam 0.5mg</h5>
+                                            </div>
+                                            <p class="text-muted mb-2">Ansiolítico</p>
+                                            <div class="d-flex flex-wrap">
+                                                <span class="time-badge bg-warning text-dark me-2 mb-2">
+                                                    <i class="fas fa-exclamation-circle me-1"></i>Uso eventual
+                                                </span>
+                                                <span class="time-badge bg-light text-dark mb-2">
+                                                    <i class="fas fa-level-up-alt me-1"></i>Ansiedad severa
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="med-actions">
+                                        <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="tooltip" title="Ver detalles">
+                                            <i class="fas fa-info-circle"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="Registrar uso">
+                                            <i class="fas fa-calendar-check"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Recordatorios -->
+                <h4 class="section-title">Gestión de recordatorios</h4>
+                <div class="card medication-card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="notificacionesApp" checked>
+                                    <label class="form-check-label" for="notificacionesApp">
+                                        Notificaciones en la aplicación
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="notificacionesEmail" checked>
+                                    <label class="form-check-label" for="notificacionesEmail">
+                                        Notificaciones por email
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="notificacionesSMS">
+                                    <label class="form-check-label" for="notificacionesSMS">
+                                        Notificaciones por SMS
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="recordatoriosCuidador">
+                                    <label class="form-check-label" for="recordatoriosCuidador">
+                                        Avisar a mi cuidador
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <label class="form-label">Tiempo de anticipación</label>
+                            <select class="form-select">
+                                <option>5 minutos antes</option>
+                                <option selected>15 minutos antes</option>
+                                <option>30 minutos antes</option>
+                                <option>1 hora antes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Información adicional -->
+                <h4 class="section-title">Información importante</h4>
+                <div class="accordion mb-4" id="medicationInfo">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+                                Posibles efectos secundarios
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#medicationInfo">
+                            <div class="accordion-body">
+                                <p>Algunos medicamentos pueden causar efectos secundarios como:</p>
+                                <ul>
+                                    <li>Somnolencia o insomnio</li>
+                                    <li>Sequedad bucal</li>
+                                    <li>Mareos o náuseas</li>
+                                    <li>Cambios en el apetito</li>
+                                </ul>
+                                <p class="alert alert-info">Si experimentas efectos secundarios intensos o persistentes, contacta inmediatamente con tu médico.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                <i class="fas fa-ban text-danger me-2"></i>
+                                Interacciones medicamentosas
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#medicationInfo">
+                            <div class="accordion-body">
+                                <p>Estos medicamentos pueden interactuar con:</p>
+                                <ul>
+                                    <li>Alcohol y otras sustancias depresoras</li>
+                                    <li>Ciertos analgésicos</li>
+                                    <li>Algunos antibióticos</li>
+                                    <li>Suplementos como Hierba de San Juan</li>
+                                </ul>
+                                <p class="alert alert-warning">Consulta siempre a tu médico antes de tomar cualquier otro medicamento o suplemento.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                <i class="fas fa-question-circle text-primary me-2"></i>
+                                Preguntas frecuentes
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#medicationInfo">
+                            <div class="accordion-body">
+                                <div class="mb-3">
+                                    <h6>¿Qué hacer si olvido tomar una dosis?</h6>
+                                    <p>Si recuerdas poco después, tómala. Si está cerca de la siguiente dosis, sáltate la olvidada y continúa con tu horario normal. No tomes dosis dobles.</p>
+                                </div>
+                                <div class="mb-3">
+                                    <h6>¿Puedo conducir o manejar maquinaria?</h6>
+                                    <p>Algunos medicamentos pueden afectar tus reflejos y concentración. Consulta específicamente con tu médico sobre esta actividad.</p>
+                                </div>
+                                <div>
+                                    <h6>¿Cuánto tiempo tarda en hacer efecto mi medicación?</h6>
+                                    <p>Los antidepresivos suelen tardar entre 2-4 semanas en mostrar efectos terapéuticos completos. Los ansiolíticos pueden tener un efecto más rápido.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Botones de acción -->
+                <div class="d-flex flex-wrap justify-content-center mt-5">
+                    <a href="pasiente_dashboard.html" class="btn btn-outline-secondary me-3 mb-3">
+                        <i class="fas fa-arrow-left me-2"></i>Volver al Panel de control
+                    </a>
+                    <button class="btn btn-primary me-3 mb-3">
+                        <a href="historial_med.html" class="btn btn-outline-secondary me-3 mb-3"></a>
+                        <i class="fas fa-history me-2"></i>Historial de medicación
+                    </button>
+                    <button class="btn btn-success mb-3">
+                        <i class="fas fa-download me-2"></i>Descargar plan de medicación
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Inicializar tooltips
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+        });
+    </script>
+</body>
+</html>
