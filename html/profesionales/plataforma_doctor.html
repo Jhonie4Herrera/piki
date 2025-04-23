@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PsycheKinesis - Panel Profesional</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      background-color: #e6f2f0;
+    }
+    .sidebar {
+      background-color: #004d4d;
+      color: #fff;
+      min-height: 100vh;
+    }
+    .sidebar a {
+      color: #fff;
+    }
+    .sidebar .nav-link.active {
+      background-color: #007a7a;
+    }
+    .main {
+      background-color: #fff;
+      border-radius: 1rem;
+      padding: 2rem;
+      margin-top: 1rem;
+    }
+    .status-atendido {
+      background-color: #007a7a;
+      color: #fff;
+    }
+    .status-pendiente {
+      background-color: #ffc107;
+      color: #000;
+    }
+    .patient-avatar {
+      background-color: #004d4d;
+      color: #fff;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 sidebar p-3">
+          <h4 class="text-center mb-4">PsycheKinesis</h4>
+          <div class="mb-4 text-center">
+            <i class="fas fa-user-md fa-2x"></i>
+            <p id="nombreUsuario" class="mb-0 fw-bold">Cargando...</p>
+          </div>
+          <ul class="nav flex-column">
+            <li class="nav-item"><a href="#" class="nav-link active"><i class="fas fa-users me-2"></i> Pacientes</a></li>
+            <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-calendar-alt me-2"></i> Citas</a></li>
+            <li class="nav-item"><a href="estadistica.html" class="nav-link"><i class="fas fa-chart-line me-2"></i> Progreso</a></li>
+            <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-cog me-2"></i> Configuración</a></li>
+            <li><a class="btn btn-danger w-100" href="inicio_doctor.html" id="logoutButton"><i class="fas fa-sign-out-alt me-2"></i>Cerrar sesión</a></li>
+          </ul>
+        </div>
+  
+        <!-- Contenido -->
+        <div class="col-md-9 col-lg-10 p-4">
+          <div class="main shadow-sm">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h3>Panel Profesional</h3>
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarPaciente">
+                <i class="fas fa-user-plus me-2"></i> Nuevo Paciente
+              </button>
+            </div>
+  
+            <div class="mb-4">
+              <input type="text" id="searchPatient" class="form-control mb-2" placeholder="Buscar por nombre...">
+              <div class="d-flex gap-3 mb-2">
+                <select id="filterStatus" class="form-select w-auto">
+                  <option value="todos">Todos</option>
+                  <option value="atendido">Atendidos</option>
+                  <option value="pendiente">Pendientes</option>
+                </select>
+                <select id="filterDiagnosis" class="form-select w-auto">
+                  <option value="todos">Todos los diagnósticos</option>
+                  <option value="ansiedad">Ansiedad</option>
+                  <option value="depresión">Depresión</option>
+                  <option value="estrés">Estrés</option>
+                </select>
+                <button id="toggleView" class="btn btn-outline-secondary">Cambiar Vista</button>
+              </div>
+            </div>
+  
+            <!-- Tabla -->
+            <div id="tableView">
+              <table class="table table-hover table-bordered">
+                <thead class="table-dark">
+                  <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Edad</th>
+                    <th>Diagnóstico</th>
+                    <th>Estado</th>
+                    <th>Próxima cita</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="listaPacientes"></tbody>
+              </table>
+            </div>
+  
+            <!-- Tarjetas -->
+            <div id="cardView" class="row" style="display: none;"></div>
+  
+            <!-- Próximas citas -->
+            <h5 class="mt-5">Próximas Citas</h5>
+            <table class="table table-bordered table-sm">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Paciente</th>
+                  <th>Motivo</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody id="listaProximasCitas"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Modal de detalles -->
+    <div class="modal fade" id="patientDetailModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalPatientName">Detalles del Paciente</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <p><strong>ID:</strong> <span id="modal-id"></span></p>
+            <p><strong>Nombre:</strong> <span id="modal-nombre"></span></p>
+            <p><strong>Edad:</strong> <span id="modal-edad"></span></p>
+            <p><strong>Diagnóstico:</strong> <span id="modal-caso"></span></p>
+            <p><strong>Estado:</strong> <span id="modal-atendido"></span></p>
+            <p><strong>Próxima cita:</strong> <span id="modal-proxima"></span></p>
+            <p><strong>Medicación:</strong> <span id="modal-medicacion">No asignada</span></p>
+            <hr />
+            <h6>Historial</h6>
+            <div id="modal-historial-timeline"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Modal agregar paciente -->
+    <div class="modal fade" id="modalAgregarPaciente" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Agregar Nuevo Paciente</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="formAgregarPaciente">
+              <div class="mb-3">
+                <label class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">apellido</label>
+                <input type="text" class="form-control" id="apellido" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Edad</label>
+                <input type="number" class="form-control" id="edad" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Género</label>
+                <select class="form-select" id="genero">
+                  <option>Masculino</option>
+                  <option>Femenino</option>
+                  <option>No binario</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Diagnostico</label>
+                <input type="text" class="form-control" id="diagnostico" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+    <!-- JS personalizado -->
+    <script>
+        // Datos del usuario
+        document.getElementById("nombreUsuario").textContent = localStorage.getItem("nombre") || "Dr. González";
+        
+        // Datos de pacientes
+        const pacientes = [
+            { id: 1, nombre: "Juan Pérez", edad: 34, caso: "Ansiedad Generalizada", atendido: "No", medicacion: "Ninguna", historial: "Cita inicial el 10/03/2025, pendiente evaluación.", proxima: "15/04/2025", historialDetallado: [
+                { fecha: "10/03/2025", descripcion: "Cita inicial. Paciente reporta episodios de ansiedad que han aumentado en frecuencia durante las últimas semanas." },
+                { fecha: "25/03/2025", descripcion: "Llamada de seguimiento. Se confirmó próxima cita para evaluación completa." }
+            ]},
+            { id: 2, nombre: "María Gómez", edad: 28, caso: "Depresión Moderada", atendido: "Sí", medicacion: "Ninguna", historial: "Evaluación el 02/03/2025, en tratamiento.", proxima: "20/04/2025", historialDetallado: [
+                { fecha: "15/02/2025", descripcion: "Primera consulta. Se identificaron síntomas de depresión moderada." },
+                { fecha: "02/03/2025", descripcion: "Evaluación completa. Se inició plan de tratamiento combinando terapia y evaluación para posible medicación." },
+                { fecha: "30/03/2025", descripcion: "Seguimiento. Paciente reporta mejora leve en su estado de ánimo." }
+            ]},
+            { id: 3, nombre: "Carlos Ramírez", edad: 45, caso: "Trastorno del Sueño", atendido: "No", medicacion: "Ninguna", historial: "Consulta el 05/03/2025, pendiente seguimiento.", proxima: "18/04/2025", historialDetallado: [
+                { fecha: "05/03/2025", descripcion: "Consulta inicial. Paciente reporta dificultad para conciliar el sueño y despertares frecuentes durante la noche." }
+            ]},
+            { id: 4, nombre: "Ana Torres", edad: 38, caso: "Estrés Postraumático", atendido: "Sí", medicacion: "Ninguna", historial: "Terapia iniciada el 12/02/2025, progresando bien.", proxima: "22/04/2025", historialDetallado: [
+                { fecha: "28/01/2025", descripcion: "Evaluación inicial. Paciente presenta síntomas relacionados con evento traumático ocurrido hace 3 meses." },
+                { fecha: "12/02/2025", descripcion: "Inicio de terapia EMDR. Se establecieron objetivos iniciales de tratamiento." },
+                { fecha: "26/02/2025", descripcion: "Segunda sesión EMDR. Paciente reporta disminución leve de reacciones ante disparadores." },
+                { fecha: "15/03/2025", descripcion: "Tercera sesión. Progreso positivo, se continúa con el plan establecido." }
+            ]},
+            { id: 5, nombre: "Luis Méndez", edad: 50, caso: "Ansiedad", atendido: "No", medicacion: "Ninguna", historial: "Evaluación pendiente.", proxima: "25/04/2025", historialDetallado: [
+                { fecha: "01/04/2025", descripcion: "Contacto inicial por teléfono. Se programó primera cita de evaluación." }
+            ]},
+            { id: 6, nombre: "Carmen Silva", edad: 30, caso: "Depresión", atendido: "Sí", medicacion: "Ninguna", historial: "Terapia en curso, cita el 05/03/2025.", proxima: "28/04/2025", historialDetallado: [
+                { fecha: "15/01/2025", descripcion: "Primera consulta. Evaluación de síntomas depresivos moderados." },
+                { fecha: "29/01/2025", descripcion: "Inicio de terapia cognitivo-conductual." },
+                { fecha: "12/02/2025", descripcion: "Segunda sesión. Se trabajó en identificación de patrones de pensamiento negativos." },
+                { fecha: "05/03/2025", descripcion: "Tercera sesión. Se observa mejoría en estado de ánimo y activación conductual." },
+                { fecha: "28/03/2025", descripcion: "Cuarta sesión. Continuamos trabajo en distorsiones cognitivas." }
+            ]},
+            { id: 7, nombre: "Raúl Castillo", edad: 60, caso: "Estrés", atendido: "No", medicacion: "Ninguna", historial: "Consulta inicial agendada.", proxima: "30/04/2025", historialDetallado: [
+                { fecha: "02/04/2025", descripcion: "Programación de primera cita por recomendación médica." }
+            ]},
+            { id: 8, nombre: "Paola Herrera", edad: 42, caso: "Déficit de Atención", atendido: "Sí", medicacion: "Ninguna", historial: "Terapia en curso desde enero.", proxima: "02/05/2025", historialDetallado: [
+                { fecha: "10/01/2025", descripcion: "Evaluación inicial. Se identificaron dificultades de atención y concentración." },
+                { fecha: "24/01/2025", descripcion: "Evaluación neuropsicológica completa." },
+                { fecha: "07/02/2025", descripcion: "Revisión de resultados. Se confirmó diagnóstico de TDAH en adultos." },
+                { fecha: "21/02/2025", descripcion: "Inicio de plan de tratamiento con estrategias conductuales." },
+                { fecha: "14/03/2025", descripcion: "Seguimiento. Se agregaron técnicas de mindfulness al tratamiento." }
+            ]}
+        ];
+        
+        const fechaActual = new Date("2025-04-03");
+        
+        const proximasCitas = pacientes
+            .map(paciente => {
+                const [dia, mes, anio] = paciente.proxima.split('/');
+                const fechaCita = new Date(`${anio}-${mes}-${dia}`);
+                return {
+                    pacienteId: paciente.id,
+                    pacienteNombre: paciente.nombre,
+                    fecha: paciente.proxima,
+                    fechaObj: fechaCita,
+                    hora: `${10 + Math.floor(Math.random() * 8)}:${Math.random() > 0.5 ? '00' : '30'}`,
+                    motivo: paciente.caso
+                };
+            })
+            .filter(cita => cita.fechaObj >= fechaActual)
+            .sort((a, b) => a.fechaObj - b.fechaObj)
+            .slice(0, 5);
+        
+        const listaPacientes = document.getElementById("listaPacientes");
+        
+        function cargarTablaPacientes() {
+            listaPacientes.innerHTML = '';
+            pacientes.forEach(paciente => {
+                const fila = document.createElement("tr");
+                const iniciales = paciente.nombre.split(' ').map(n => n.charAt(0)).join('');
+                fila.innerHTML = `
+                    <td>${paciente.id}</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="patient-avatar me-2">${iniciales}</div>
+                            ${paciente.nombre}
+                        </div>
+                    </td>
+                    <td>${paciente.edad}</td>
+                    <td>${paciente.caso || "Por definir"}</td>
+                    <td>
+                        <span class="badge ${paciente.atendido === 'Sí' ? 'status-atendido' : 'status-pendiente'}">
+                            ${paciente.atendido === 'Sí' ? 'Atendido' : 'Pendiente'}
+                        </span>
+                    </td>
+                    <td>${paciente.proxima || "Por definir"}</td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-outline-primary me-1" onclick='verDetallesPaciente(${paciente.id})'>
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-success me-1">
+                            <i class="fas fa-calendar-plus"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-info me-1">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </td>
+                `;
+                listaPacientes.appendChild(fila);
+            });
+        }
+        
+        const cardView = document.getElementById("cardView");
+        
+        function cargarTarjetasPacientes() {
+            cardView.innerHTML = '';
+            pacientes.forEach(paciente => {
+                const col = document.createElement("div");
+                col.className = "col-md-6 col-xl-4 mb-4";
+        
+                const iniciales = paciente.nombre.split(' ').map(n => n.charAt(0)).join('');
+        
+                col.innerHTML = `
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="patient-info d-flex align-items-center gap-3">
+                                    <div class="patient-avatar">${iniciales}</div>
+                                    <div>
+                                        <h5 class="mb-0">${paciente.nombre}</h5>
+                                        <small class="text-muted">${paciente.edad} años</small>
+                                    </div>
+                                </div>
+                                <span class="badge ${paciente.atendido === 'Sí' ? 'status-atendido' : 'status-pendiente'}">
+                                    ${paciente.atendido === 'Sí' ? 'Atendido' : 'Pendiente'}
+                                </span>
+                            </div>
+                            <div class="mb-3"><strong>Diagnóstico:</strong> ${paciente.caso || "Por definir"}</div>
+                            <div class="mb-3"><strong>Próxima cita:</strong> ${paciente.proxima || "Por definir"}</div>
+                            <div class="mb-3"><strong>Medicación:</strong> ${paciente.medicacion}</div>
+                            <hr>
+                            <div class="d-flex justify-content-between flex-wrap gap-2">
+                                <button class="btn btn-sm btn-primary" onclick='verDetallesPaciente(${paciente.id})'>
+                                    <i class="fas fa-clipboard-list me-1"></i> Ver Historial
+                                </button>
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-calendar-plus me-1"></i> Agendar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                cardView.appendChild(col);
+            });
+        }
+        
+        function cargarProximasCitas() {
+            const listaProximasCitas = document.getElementById("listaProximasCitas");
+            listaProximasCitas.innerHTML = '';
+            proximasCitas.forEach(cita => {
+                const fila = document.createElement("tr");
+                fila.innerHTML = `
+                    <td>${cita.fecha}</td>
+                    <td>${cita.hora}</td>
+                    <td>${cita.pacienteNombre}</td>
+                    <td>${cita.motivo}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="verDetallesPaciente(${cita.pacienteId})">
+                            <i class="fas fa-eye me-1"></i> Ver
+                        </button>
+                    </td>
+                `;
+                listaProximasCitas.appendChild(fila);
+            });
+        }
+        
+        function verDetallesPaciente(id) {
+            const paciente = pacientes.find(p => p.id === id);
+            if (!paciente) return;
+        
+            document.getElementById("modalPatientName").textContent = `Detalles de ${paciente.nombre}`;
+            document.getElementById("modal-id").textContent = paciente.id;
+            document.getElementById("modal-nombre").textContent = paciente.nombre;
+            document.getElementById("modal-edad").textContent = paciente.edad;
+            document.getElementById("modal-caso").textContent = paciente.caso;
+            document.getElementById("modal-atendido").textContent = paciente.atendido;
+            document.getElementById("modal-proxima").textContent = paciente.proxima;
+            document.getElementById("modal-medicacion").textContent = paciente.medicacion;
+        
+            const historialTimeline = document.getElementById("modal-historial-timeline");
+            historialTimeline.innerHTML = '';
+            (paciente.historialDetallado || []).forEach(item => {
+                const entry = document.createElement("div");
+                entry.classList.add("mb-3");
+                entry.innerHTML = `<strong>${item.fecha}</strong><br><span>${item.descripcion}</span>`;
+                historialTimeline.appendChild(entry);
+            });
+        
+            const modal = new bootstrap.Modal(document.getElementById("patientDetailModal"));
+            modal.show();
+        }
+        
+        document.getElementById("searchPatient").addEventListener("input", () => {
+            const texto = document.getElementById("searchPatient").value.toLowerCase();
+            Array.from(listaPacientes.getElementsByTagName("tr")).forEach(fila => {
+                const nombre = fila.cells[1].innerText.toLowerCase();
+                fila.style.display = nombre.includes(texto) ? "" : "none";
+            });
+        });
+        
+        document.getElementById("filterStatus").addEventListener("change", () => {
+            const filtro = document.getElementById("filterStatus").value;
+            Array.from(listaPacientes.getElementsByTagName("tr")).forEach(fila => {
+                const estado = fila.cells[4].innerText.toLowerCase();
+                fila.style.display = (filtro === "todos" || estado.includes(filtro)) ? "" : "none";
+            });
+        });
+        
+        document.getElementById("filterDiagnosis").addEventListener("change", () => {
+            const filtro = document.getElementById("filterDiagnosis").value.toLowerCase();
+            Array.from(listaPacientes.getElementsByTagName("tr")).forEach(fila => {
+                const diagnostico = fila.cells[3].innerText.toLowerCase();
+                fila.style.display = (filtro === "todos" || diagnostico.includes(filtro)) ? "" : "none";
+            });
+        });
+        
+        document.getElementById("toggleView").addEventListener("click", () => {
+            const tableView = document.getElementById("tableView");
+            const cardView = document.getElementById("cardView");
+            const visible = tableView.style.display !== "none";
+            tableView.style.display = visible ? "none" : "block";
+            cardView.style.display = visible ? "flex" : "none";
+        });
+
+        document.getElementById("formAgregarPaciente").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const nombre = document.getElementById("nombre").value.trim();
+            const apellido = document.getElementById("apellido").value.trim();
+            const edad = parseInt(document.getElementById("edad").value);
+            const genero = document.getElementById("genero").value;
+            const diagnostico = document.getElementById("diagnostico").value.trim();
+
+            if (nombre && apellido && edad > 0 && diagnostico) {
+                const nuevoPaciente = {
+                    id: pacientes.length + 1,
+                    nombre,
+                    apellido,
+                    edad,
+                    genero,
+                    caso: diagnostico,
+                    atendido: "No",
+                    medicacion: "Ninguna",
+                    proxima: "",
+                    historialDetallado: []
+                };
+
+                pacientes.push(nuevoPaciente);
+                cargarTablaPacientes();
+                cargarTarjetasPacientes();
+
+                const modal = bootstrap.Modal.getInstance(document.getElementById("modalAgregarPaciente"));
+                modal.hide();
+                this.reset(); // Resetear el formulario
+            } else {
+                alert("Por favor, completa todos los campos correctamente.");
+            }
+        });
+
+        // Inicialización
+        cargarTablaPacientes();
+        cargarTarjetasPacientes();
+        cargarProximasCitas();
+    </script>
+</body>
+</html>

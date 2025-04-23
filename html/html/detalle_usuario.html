@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Usuario - PsycheKinesis</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --dark-text: #2c3e50;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+        }
+        
+        .navbar {
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            border-radius: 10px 10px 0 0 !important;
+            font-weight: 600;
+        }
+        
+        .bg-primary {
+            background-color: var(--primary-color) !important;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .text-muted {
+            color: #7f8c8d !important;
+        }
+        
+        .list-group-item {
+            border-left: none;
+            border-right: none;
+            padding: 0.75rem 1.25rem;
+        }
+        
+        .list-group-item:first-child {
+            border-top: none;
+        }
+        
+        .badge {
+            padding: 0.5rem 0.75rem;
+            font-weight: 500;
+            border-radius: 30px;
+        }
+        
+        .bg-danger {
+            background-color: var(--danger-color) !important;
+        }
+        
+        .bg-info {
+            background-color: var(--secondary-color) !important;
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--secondary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 1rem auto;
+        }
+        
+        .spinner-grow {
+            width: 3rem;
+            height: 3rem;
+        }
+        
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0.75rem 0;
+            margin-bottom: 1.5rem;
+        }
+        
+        .breadcrumb-item a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+        
+        .breadcrumb-item.active {
+            color: var(--dark-text);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <i class="fas fa-brain me-2"></i>
+                <span>PsycheKinesis</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="inicio.html">
+                            <i class="fas fa-home me-1"></i> Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="usuarios.html">
+                            <i class="fas fa-users me-1"></i> Usuarios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="config.html">
+                            <i class="fas fa-cog me-1"></i> Configuración
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mb-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="usuarios.html">Usuarios</a></li>
+                <li class="breadcrumb-item active" id="breadcrumbUsuario">Detalle del Usuario</li>
+            </ol>
+        </nav>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3">
+                        <h4 class="m-0" id="tituloUsuario">Detalle del Usuario</h4>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                <li><a class="dropdown-item" href="#" id="editarUsuarioBtn"><i class="fas fa-edit me-2"></i>Editar usuario</a></li>
+                                <li><a class="dropdown-item" href="#" id="cambiarClaveBtn"><i class="fas fa-key me-2"></i>Cambiar contraseña</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#" id="desactivarUsuarioBtn"><i class="fas fa-user-slash me-2"></i>Desactivar usuario</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <div id="detalleUsuario">
+                            <div class="d-flex justify-content-center align-items-center" style="height: 300px;">
+                                <div class="text-center">
+                                    <div class="spinner-grow text-primary" role="status">
+                                        <span class="visually-hidden">Cargando...</span>
+                                    </div>
+                                    <p class="mt-3 text-muted">Cargando información del usuario...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between py-3">
+                        <a href="usuarios.html" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Volver a la lista
+                        </a>
+                        <div>
+                            <button type="button" class="btn btn-outline-primary me-2" id="enviarCorreoBtn">
+                                <i class="fas fa-envelope me-1"></i> Enviar correo
+                            </button>
+                            <button type="button" class="btn btn-primary" id="verActividadBtn">
+                                <i class="fas fa-chart-line me-1"></i> Ver actividad
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-primary text-white text-center py-4 mt-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4 text-md-start">
+                    <div class="d-flex align-items-center justify-content-center justify-content-md-start">
+                        <i class="fas fa-brain me-2"></i>
+                        <span class="fw-bold">PsycheKinesis</span>
+                    </div>
+                </div>
+                <div class="col-md-4 my-3 my-md-0">
+                    <p class="mb-0">&copy; 2025 PsycheKinesis. Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <a href="#" class="text-white mx-2"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-white mx-2"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-white mx-2"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Base de datos simulada de usuarios
+        const usuarios = [
+            { id: 1, nombre: "Emanuel Logreira", rol: "Administrador", email: "emanuel@psychekinesis.com", departamento: "Tecnología", fechaRegistro: "15/01/2023", ultimoAcceso: "30/03/2025", activo: true, permisos: ["Crear usuarios", "Editar usuarios", "Eliminar usuarios", "Gestionar roles"] },
+            { id: 2, nombre: "Fabian Diaz", rol: "Administrador", email: "fabian@psychekinesis.com", departamento: "Tecnología", fechaRegistro: "15/01/2023", ultimoAcceso: "30/03/2025", activo: true, permisos: ["Crear usuarios", "Editar usuarios", "Eliminar usuarios", "Gestionar roles"] },
+            { id: 3, nombre: "Jhonier Herrera", rol: "Administrador", email: "jhonier@psychekinesis.com", departamento: "Tecnología", fechaRegistro: "15/01/2023", ultimoAcceso: "30/03/2025", activo: true, permisos: ["Crear usuarios", "Editar usuarios", "Eliminar usuarios", "Gestionar roles"] },
+            { id: 4, nombre: "Brayan Fernandez", rol: "Usuario Estándar", email: "brayan@psychekinesis.com", departamento: "Call Center", fechaRegistro: "05/03/2023", ultimoAcceso: "28/03/2025", activo: false, permisos: ["Ver informes", "Crear tickets"] }
+        ];
+
+        // Función para obtener parámetros de la URL
+        function obtenerParametroURL(nombre) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(nombre);
+        }
+
+        // Función para conseguir iniciales del nombre para el avatar
+        function obtenerIniciales(nombre) {
+            const nombres = nombre.split(' ');
+            if (nombres.length >= 2) {
+                return (nombres[0].charAt(0) + nombres[1].charAt(0)).toUpperCase();
+            }
+            return nombre.charAt(0).toUpperCase();
+        }
+
+        

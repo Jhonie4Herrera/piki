@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido - PsycheKinesis</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom styles that override Bootstrap -->
+    <style>
+        :root {
+            --primary-color: #00a8e8;
+            --accent-color: #f76c6c;
+            --primary-color-dark: #007bb5;
+        }
+    
+        .navbar, .footer {
+            background-color: var(--primary-color);
+        }
+    
+        .btn-accent:hover {
+            background-color: #e45858;
+            border-color: #e45858;
+            color: white;
+        }
+    
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+    
+        .btn-primary:hover {
+             background-color: var(--primary-color-dark); 
+              border-color: var(--primary-color-dark);
+        }
+    
+        .chat-box {
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+        }
+    
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 0.5rem;
+            border: 1px solid #ddd;
+        }
+    
+        .chat-input {
+            margin-top: 1rem;
+        }
+    
+        .user-message {
+            text-align: right;
+            color: #007bb5;
+            font-weight: bold;
+        }
+    
+        .bot-message {
+            text-align: left;
+            color: #333;
+        }
+    </style>
+    <script src="js/main.js" defer></script>
+</head>
+
+<body class="bg-light">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand">PsycheKinesis</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav ms-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="bienestar.html">Bienestar</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="chatbot.html">Chatbot</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="contactos.html">Contactos de Emergencia</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="nosotros.html">Nosotros</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="pregfrecu.html">Preguntas Frecuentes</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="recursos.html" aria-current="page">Recursos</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container py-5 welcome-section">
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-10 text-center">
+                <h1 class="welcome-title display-4 mb-4">Bienvenido a PsycheKinesis</h1>
+                <p class="lead mb-5">
+                    Un espacio dedicado a tu bienestar mental donde encontrarás herramientas, 
+                    recursos y apoyo para cuidar lo más importante: tu salud emocional. 
+                    Tu viaje hacia una mente más saludable comienza aquí.
+                </p>
+                <div class="d-flex justify-content-center gap-3">
+
+                    <a href="evaluacion-emocional.html" class="btn btn-accent btn-lg pulse-btn">
+                        <i class="fas fa-heart-pulse me-2"></i>¿Cómo te sientes hoy?
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-5 g-4">
+            <!-- Recursos Educativos -->
+            <div class="col-md-3">
+                <a href="recursos.html" class="text-decoration-none text-dark">
+                    <div class="card shadow h-100 feature-card">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon">🧠</div>
+                            <h3 class="h5 card-title">Recursos Educativos</h3>
+                            <p class="card-text">Artículos, guías y material informativo sobre salud mental.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        
+            <!-- Comunidad -->
+            <div class="col-md-3">
+                <a href="comunidad.html" class="text-decoration-none text-dark">
+                    <div class="card shadow h-100 feature-card">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon">👥</div>
+                            <h3 class="h5 card-title">Comunidad</h3>
+                            <p class="card-text">Conecta con personas que comparten experiencias similares.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        
+            <!-- Autoevaluaciones -->
+            <div class="col-md-3">
+                <a href="auto-evaluacion.html" class="text-decoration-none text-dark">
+                    <div class="card shadow h-100 feature-card">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon">📝</div>
+                            <h3 class="h5 card-title">Autoevaluaciones</h3>
+                            <p class="card-text">Herramientas para entender mejor tu estado emocional actual.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        
+            <!-- Profesionales -->
+            <div class="col-md-3">
+                <a href="lista_prof.html" class="text-decoration-none text-dark">
+                    <div class="card shadow h-100 feature-card">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon">👨‍⚕️</div>
+                            <h3 class="h5 card-title">Profesionales</h3>
+                            <p class="card-text">Acceso a psicólogos y especialistas en salud mental.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Nueva sección de mini-juegos -->
+        <div class="games-section mt-5">
+            <h2 class="text-center mb-4">Mini-Juegos para tu Bienestar</h2>
+            <p class="text-center mb-4">Juegos interactivos diseñados para reducir el estrés y mejorar tu estado de ánimo</p>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card game-card">
+                        <img src="juegos/Imagen1.jpg" class="card-img-top game-image" alt="Juego de respiración">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Respiración Guiada</h5>
+                            <p class="card-text">Aprende a controlar tu respiración para reducir la ansiedad.</p>
+                            <a href="juegos/juegos/respiracion.html" class="btn btn-primary">Jugar Ahora</a>
+                        </div>
+                    </div>
+                </div>
+            
+                    <div class="col-md-4">
+                        <div class="card game-card">
+                            <img src="juegos/Imagen2.jpg" class="card-img-top game-image" alt="Juego memoria">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Juego memoria</h5>
+                                <p class="card-text">Ejercita tu mente y mejora tu concentración con este divertido juego.</p>
+                                <a href="juegos/juegos/memoria.html" class="btn btn-primary">Jugar Ahora</a>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="col-md-4">
+                        <div class="card game-card">
+                            <img src="juegos/Imagen3.jpg" class="card-img-top game-image" alt="Jardin zen">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Juego memoria</h5>
+                                <p class="card-text">Ejercita tu mente y mejora tu concentración con este divertido juego.</p>
+                                <a href="juegos/juegos/jardinzen.html" class="btn btn-primary">Jugar Ahora</a>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="juegos/mini-juegos.html" class="btn btn-outline-primary">Ver todos los juegos</a>
+            </div>
+        </div>
+        
+        
+    </div>
+
+    <footer class="footer py-3 text-center text-white mt-5">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 PsycheKinesis. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

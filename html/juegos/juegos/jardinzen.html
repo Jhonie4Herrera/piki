@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espíritu del Jardín - Mini Juego</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f3ee;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        h1 {
+            color: #4a6741;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .game-area {
+            background-color: #e9e4da;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+        }
+        
+        .sand {
+            background-color: #e6dbc9;
+            height: 350px;
+            width: 100%;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .element {
+            position: absolute;
+            cursor: grab;
+            user-select: none;
+            transition: transform 0.2s ease;
+        }
+        
+        .element:active {
+            cursor: grabbing;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .control-btn {
+            background-color: #4a6741;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        
+        .control-btn:hover {
+            background-color: #5a7b51;
+        }
+        
+        .meditation-bar {
+            height: 20px;
+            width: 100%;
+            background-color: #e6e6e6;
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        
+        .meditation-progress {
+            height: 100%;
+            width: 10%;
+            background-color: #4a6741;
+            transition: width 0.5s ease;
+        }
+        
+        .message-box {
+            text-align: center;
+            margin-top: 15px;
+            min-height: 20px;
+            font-style: italic;
+            color: #666;
+        }
+        
+        .element-selector {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .element-btn {
+            background-color: #e0d5c1;
+            border: 1px solid #bfb5a3;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        
+        .element-btn:hover {
+            background-color: #d0c5b1;
+        }
+        
+        @media (max-width: 600px) {
+            .game-area {
+                height: 300px;
+            }
+            
+            .sand {
+                height: 250px;
+            }
+            
+            .element-selector {
+                gap: 5px;
+            }
+            
+            .element-btn {
+                padding: 6px 8px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Espíritu del Jardín</h1>
+
+        <!-- Audio background -->
+        <audio id="background-music" loop>
+            <source src="musica/Lo-fi.mp3" type="audio/mp3">
+            Tu navegador no soporta la etiqueta de audio.
+        </audio>
+        
+        <!-- Button to play music (for browsers that block autoplay) -->
+        <button onclick="document.getElementById('background-music').play()">Reproducir Música</button>
+
+        <div class="element-selector">
+            <button class="element-btn" data-element="rock">Roca</button>
+            <button class="element-btn" data-element="bamboo">Bambú</button>
+            <button class="element-btn" data-element="plant">Planta</button>
+            <button class="element-btn" data-element="lantern">Linterna</button>
+            <button class="element-btn" data-element="rake">Rastrillo</button>
+            <button class="element-btn" data-element="bonsai">Bonsai</button>
+        </div>
+        
+        <div class="game-area">
+            <div class="sand" id="sand-area"></div>
+        </div>
+        
+        <div class="meditation-bar">
+            <div class="meditation-progress" id="meditation-progress"></div>
+        </div>
+        
+        <div class="message-box" id="message-box">
+            Coloca los elementos en el jardín para crear tu espacio de armonía...
+        </div>
+        
+        <div class="controls">
+            <button class="control-btn" id="clear-btn">Limpiar Jardín</button>
+            <button class="control-btn" id="rake-btn">Rastrillar Arena</button>
+            <button class="control-btn" id="meditate-btn">Meditar</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sandArea = document.getElementById('sand-area');
+            const meditationProgress = document.getElementById('meditation-progress');
+            const messageBox = document.getElementById('message-box');
+            const clearBtn = document.getElementById('clear-btn');
+            const rakeBtn = document.getElementById('rake-btn');
+            const meditateBtn = document.getElementById('meditate-btn');
+            const elementButtons = document.querySelectorAll('.element-btn');
+            
+            let harmony = 10;
+            let elementCount = 0;
+            let isRaked = false;
+            let isMeditating = false;
+            let meditationInterval;
+            
+            const messages = [
+                "La simplicidad es el camino hacia la paz interior.",
+                "El vacío es tan importante como lo que está presente.",
+                "La armonía surge del equilibrio de los elementos.",
+                "Tu jardín refleja el estado de tu mente.",
+                "Respira profundamente y siente la calma.",
+                "Cada elemento tiene su lugar perfecto.",
+                "La paciencia es la clave para un jardín armonioso.",
+                "Observa sin juzgar, coloca sin apresurarte."
+            ];
+            
+            function updateMeditationBar() {
+                meditationProgress.style.width = `${harmony}%`;
+                
+                if (harmony < 30) {
+                    meditationProgress.style.backgroundColor = '#c75f5f';
+                } else if (harmony < 70) {
+                    meditationProgress.style.backgroundColor = '#d3ae50';
+                } else {
+                    meditationProgress.style.backgroundColor = '#4a6741';
+                }
+                
+                if (harmony >= 100) {
+                    messageBox.textContent = "¡Has alcanzado la armonía perfecta! Tu jardín es un reflejo de paz interior.";
+                    sandArea.style.boxShadow = "0 0 20px rgba(74, 103, 65, 0.6)";
+                }
+            }
+            
+            function showRandomMessage() {
+                const randomIndex = Math.floor(Math.random() * messages.length);
+                messageBox.textContent = messages[randomIndex];
+            }
+
+            // Add elements to the garden
+            elementButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const elementType = this.getAttribute('data-element');
+                    addElement(elementType);
+                });
+            });
+
+            function addElement(type) {
+                if (elementCount >= 10) {
+                    messageBox.textContent = "Tu jardín está lleno. Considera remover algunos elementos para mantener la simplicidad.";
+                    harmony = Math.max(harmony - 5, 0);
+                    updateMeditationBar();
+                    return;
+                }
+
+                const element = document.createElement('div');
+                element.className = 'element';
+                element.dataset.type = type;
+
+                // Set element appearance based on type
+                switch(type) {
+                    case 'rock':
+                        element.style.width = `${30 + Math.random() * 20}px`;
+                        element.style.height = `${20 + Math.random() * 15}px`;
+                        element.style.backgroundColor = `rgb(${120 + Math.random() * 40}, ${120 + Math.random() * 40}, ${120 + Math.random() * 40})`;
+                        element.style.borderRadius = '50% 40% 45% 50%';
+                        break;
+                    case 'bamboo':
+                        element.style.width = '15px';
+                        element.style.height = '100px';
+                        element.style.backgroundColor = '#8B9F74';
+                        element.style.borderRadius = '10px';
+                        element.style.boxShadow = '0 0 5px rgba(139, 159, 116, 0.5)';
+                        break;
+                    case 'plant':
+                        element.style.width = '20px';
+                        element.style.height = '40px';
+                        element.style.backgroundColor = '#4a6741';
+                        element.style.borderRadius = '0 0 40% 40%';
+                        element.style.boxShadow = '0 -5px 10px -5px #4a6741';
+                        break;
+                    case 'lantern':
+                        element.style.width = '15px';
+                        element.style.height = '30px';
+                        element.style.backgroundColor = '#d3ae50';
+                        element.style.borderRadius = '2px';
+                        element.style.boxShadow = '0 0 10px rgba(255, 223, 130, 0.7)';
+                        break;
+                    case 'rake':
+                        element.style.width = '40px';
+                        element.style.height = '10px';
+                        element.style.backgroundColor = '#8c6e4b';
+                        element.style.borderRadius = '2px';
+                        element.innerHTML = '<div style="width: 100%; height: 2px; background-color: #6d563b; margin-top: 3px;"></div><div style="width: 100%; height: 2px; background-color: #6d563b; margin-top: 2px;"></div>';
+                        break;
+                    case 'bonsai':
+                        element.style.width = '35px';
+                        element.style.height = '45px';
+                        element.innerHTML = '<div style="width: 10px; height: 15px; background-color: #8c6e4b; margin: 0 auto;"></div><div style="width: 30px; height: 25px; background-color: #4a6741; border-radius: 50%; margin: -5px auto 0;"></div>';
+                        break;
+                }
+                
+                // Set random position in the sand area
+                const maxX = sandArea.clientWidth - parseInt(element.style.width || '30');
+                const maxY = sandArea.clientHeight - parseInt(element.style.height || '30');
+                element.style.left = `${Math.random() * maxX}px`;
+                element.style.top = `${Math.random() * maxY}px`;
+                
+                // Make element draggable
+                element.addEventListener('mousedown', startDragging);
+                element.addEventListener('touchstart', startDragging, { passive: false });
+                
+                sandArea.appendChild(element);
+                elementCount++;
+                isRaked = false;
+                
+                // Update harmony
+                adjustHarmony();
+            }
+            
+            function startDragging(e) {
+                e.preventDefault();
+                
+                const element = this;
+                let startX, startY;
+                let initialLeft = parseInt(element.style.left);
+                let initialTop = parseInt(element.style.top);
+                
+                if (e.type === 'mousedown') {
+                    startX = e.clientX;
+                    startY = e.clientY;
+                } else if (e.type === 'touchstart') {
+                    startX = e.touches[0].clientX;
+                    startY = e.touches[0].clientY;
+                }
+                
+                function handleMove(moveEvent) {
+                    let currentX, currentY;
+                    
+                    if (moveEvent.type === 'mousemove') {
+                        currentX = moveEvent.clientX;
+                        currentY = moveEvent.clientY;
+                    } else if (moveEvent.type === 'touchmove') {
+                        currentX = moveEvent.touches[0].clientX;
+                        currentY = moveEvent.touches[0].clientY;
+                    }
+                    
+                    const dx = currentX - startX;
+                    const dy = currentY - startY;
+                    
+                    const newLeft = initialLeft + dx;
+                    const newTop = initialTop + dy;
+                    
+                    // Ensure element stays within bounds
+                    const maxX = sandArea.clientWidth - element.offsetWidth;
+                    const maxY = sandArea.clientHeight - element.offsetHeight;
+                    
+                    element.style.left = `${Math.max(0, Math.min(maxX, newLeft))}px`;
+                    element.style.top = `${Math.max(0, Math.min(maxY, newTop))}px`;
+                }
+                
+                function handleEnd() {
+                    document.removeEventListener('mousemove', handleMove);
+                    document.removeEventListener('mouseup', handleEnd);
+                    document.removeEventListener('touchmove', handleMove);
+                    document.removeEventListener('touchend', handleEnd);
+                    
+                    isRaked = false;
+                    adjustHarmony();
+                }
+                
+                document.addEventListener('mousemove', handleMove);
+                document.addEventListener('mouseup', handleEnd);
+                document.addEventListener('touchmove', handleMove, { passive: false });
+                document.addEventListener('touchend', handleEnd);
+            }
+            
+            // Adjust harmony based on elements added
+            function adjustHarmony() {
+                harmony = Math.max(harmony - 5, 0);
+                updateMeditationBar();
+            }
+            
+            clearBtn.addEventListener('click', function() {
+                sandArea.innerHTML = '';
+                elementCount = 0;
+                harmony = 10;
+                updateMeditationBar();
+            });
+            
+            rakeBtn.addEventListener('click', function() {
+                isRaked = !isRaked;
+                messageBox.textContent = isRaked ? "El jardín está rastrillado. Respira profundamente..." : "El jardín está desordenado. Rastríllalo para mantener la calma.";
+                adjustHarmony();
+            });
+            
+            meditateBtn.addEventListener('click', function() {
+                if (!isMeditating) {
+                    isMeditating = true;
+                    meditationInterval = setInterval(() => {
+                        harmony = Math.min(harmony + 1, 100);
+                        updateMeditationBar();
+                    }, 2000);
+                    messageBox.textContent = "Estás meditando... Respira y encuentra la paz.";
+                } else {
+                    isMeditating = false;
+                    clearInterval(meditationInterval);
+                    messageBox.textContent = "La meditación ha terminado.";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

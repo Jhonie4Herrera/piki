@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PsycheKinesis: Recursos para el bienestar emocional y psicológico, incluyendo meditación, manejo de ansiedad, autoconocimiento y libros recomendados.">
+    <title>PsycheKinesis - Bienestar</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome para los íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Custom styles -->
+    <style>
+        :root {
+            --primary-color: #00a8e8;
+            --primary-color-dark: #007bb5;
+        }
+
+        .navbar, .footer {
+            background-color: var(--primary-color);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-color-dark);
+            border-color: var(--primary-color-dark);
+        }
+        .category-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .category-nav a {
+            color: var(--primary-color);
+            background-color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            border: 2px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+        
+        .category-nav a:hover,
+        .category-nav a.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        
+        .chat-box {
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 0.5rem;
+            border: 1px solid #ddd;
+        }
+
+        .chat-input {
+            margin-top: 1rem;
+        }
+
+        .user-message {
+            text-align: right;
+            color: #007bb5;
+            font-weight: bold;
+        }
+
+        .bot-message {
+            text-align: left;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+    <!-- Header -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center">
+                    <i class="fas fa-brain me-2"></i>PsycheKinesis
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="inicio.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="chatbot.html">Chatbot</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contactos.html">Contactos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="nosotros.html">Nosotros</a></li>
+                        <li class="nav-item"><a class="nav-link" href="recursos.html">Recursos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="pregfrecu.html">Preguntas Frecuentes</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+        <!-- Hero Section -->
+        <section class="text-center mb-5">
+            <h1 class="display-4 fw-bold mb-3">Recursos para Bienestar</h1>
+            <p class="lead text-muted mb-4 col-lg-8 mx-auto">Descubre herramientas, guías y contenido para mejorar tu bienestar emocional y psicológico.</p>
+            
+            <!-- Categorías Navegación -->
+            <div class="category-nav mx-auto">
+                <a href="#meditacion" class="active">Meditación</a>
+                <a href="#ansiedad">Ansiedad</a>
+                <a href="#autoconocimiento">Autoconocimiento</a>
+                <a href="#libros">Libros</a>
+            </div>
+        </section>
+
+        <!-- Recurso Destacado -->
+        <section class="mb-5">
+            <div class="card border-0 shadow-sm overflow-hidden">
+                <div class="row g-0">
+                    <div class="col-lg-6 d-flex align-items-center">
+                        <div class="p-4 p-lg-5">
+                            <div class="d-inline-block bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-pill mb-3">Recurso Destacado</div>
+                            <h2 class="h3 fw-bold mb-3">Guía completa para manejar el estrés</h2>
+                            <p class="text-muted mb-4">Esta guía te proporciona técnicas prácticas y consejos basados en evidencia para gestionar el estrés diario y cultivar una mentalidad más equilibrada.</p>
+                            <a href="https://www.helpguide.org/es/estres/guia-para-aliviar-el-estres" class="btn btn-primary" target="_blank" rel="noopener">
+                                <i class="fas fa-file-pdf me-2"></i>Ver guía
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <img src="/imagenes/Imagen1.png" alt="Guía de manejo del estrés" class="img-fluid h-100 object-fit-cover">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección: Meditación -->
+        <section id="meditacion" class="mb-5 pt-4">
+            <h2 class="section-heading h3 fw-bold">Meditación y Mindfulness</h2>
+            <p class="text-muted mb-4">Prácticas para cultivar la atención plena y encontrar calma en la vida diaria.</p>
+
+            <div class="row g-4">
+                <!-- Tarjeta 1 -->
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm resource-card">
+                        <img src="https://img.youtube.com/vi/O6tJJZ23ZaA/hqdefault.jpg" alt="Meditación guiada para principiantes" class="card-img-top">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge bg-primary">10 minutos</span>
+                                <span class="text-muted small"><i class="fas fa-headphones me-1"></i>Audio en español</span>
+                            </div>
+                            <h3 class="h5 fw-bold mb-3">Meditación guiada para principiantes</h3>
+                            <p class="text-muted mb-4">Una introducción perfecta a la práctica de la meditación, ideal para quienes comienzan su camino hacia la atención plena.</p>
+                            <a href="https://youtu.be/O6tJJZ23ZaA" class="btn btn-outline-primary w-100" target="_blank" rel="noopener">
+                                <i class="fas fa-play-circle me-2"></i>Ver video
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2 -->
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm resource-card">
+                        <img src="https://img.youtube.com/vi/22i6SofLVRY/hqdefault.jpg" alt="Técnicas de respiración consciente" class="card-img-top">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge bg-primary">15 minutos</span>
+                                <span class="text-muted small"><i class="fas fa-headphones me-1"></i>Audio en español</span>
+                            </div>
+                            <h3 class="h5 fw-bold mb-3">Técnicas de respiración consciente</h3>
+                            <p class="text-muted mb-4">Aprende a utilizar tu respiración como ancla para cultivar la calma y gestionar el estrés en cualquier momento del día.</p>
+                            <a href="https://youtu.be/22i6SofLVRY" class="btn btn-outline-primary w-100" target="_blank" rel="noopener">
+                                <i class="fas fa-play-circle me-2"></i>Ver video
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3 -->
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm resource-card">
+                        <img src="https://img.youtube.com/vi/CkAOFDuxB38/hqdefault.jpg" alt="Meditación para conciliar el sueño" class="card-img-top">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge bg-primary">15:51 minutos</span>
+                                <span class="text-muted small"><i class="fas fa-headphones me-1"></i>Audio en español</span>
+                            </div>
+                            <h3 class="h5 fw-bold mb-3">Meditación para conciliar el sueño</h3>
+                            <p class="text-muted mb-4">Una práctica relajante diseñada para ayudarte a desconectar y preparar tu mente y cuerpo para un descanso reparador.</p>
+                            <a href="https://youtu.be/CkAOFDuxB38" class="btn btn-outline-primary w-100" target="_blank" rel="noopener">
+                                <i class="fas fa-play-circle me-2"></i>Ver video
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección: Ansiedad -->
+        <section id="ansiedad" class="mb-5 pt-4">
+            <h2 class="section-heading h3 fw-bold">Manejo de la Ansiedad</h2>
+            <p class="text-muted mb-4">Estrategias y herramientas prácticas para reducir los síntomas de ansiedad y recuperar el control.</p>
+
+            <div class="row g-4">
+                <!-- Técnica 5-4-3-2-1 -->
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100 help-card">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="icon-circle bg-primary bg-opacity-10 text-primary me-3">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <h3 class="h5 fw-bold mb-0">Técnica 5-4-3-2-1</h3>
+                            </div>
+                            <p class="mb-3">Una técnica de anclaje sensorial para reducir la ansiedad rápidamente:</p>
+                            <div class="bg-light p-3 rounded mb-3">
+                                <ul class="list-group list-group-flush bg-transparent">
+                                    <li class="list-group-item bg-transparent px-0 py-2 border-0"><strong>5</strong> cosas que puedes <span class="text-primary">ver</span></li>
+                                    <li class="list-group-item bg-transparent px-0 py-2 border-0"><strong>4</strong> cosas que puedes <span class="text-primary">tocar</span></li>
+                                    <li class="list-group-item bg-transparent px-0 py-2 border-0"><strong>3</strong> cosas que puedes <span class="text-primary">oír</span></li>
+                                    <li class="list-group-item bg-transparent px-0 py-2 border-0"><strong>2</strong> cosas que puedes <span class="text-primary">oler</span></li>
+                                    <li class="list-group-item bg-transparent px-0 py-2 border-0"><strong>1</strong> cosa que puedes <span class="text-primary">saborear</span></li>
+                                </ul>
+                            </div>
+                            <a href="imagenes/mindfulness.jpg" class="btn btn-outline-primary" download>
+                                <i class="fas fa-download me-2"></i>Descargar infografía
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ejercicios de respiración -->
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100 help-card">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="icon-circle bg-primary bg-opacity-10 text-primary me-3">
+                                    <i class="fas fa-heart-pulse"></i>
+                                </div>
+                                <h3 class="h5 fw-bold mb-0">Ejercicios de respiración</h3>
+                            </div>
+                            <p class="mb-3">Tres técnicas efectivas para regular el sistema nervioso:</p>
+                            <div class="bg-light p-3 rounded mb-3">
+                                <ul class="list-group list-group-flush bg-transparent">
+                                    <li class="list-group-item bg-transparent px-0 py-2 border-0">
+                                        <div class="d-flex">
+                                            <span class="badge bg-primary rounded-pill me-2">1</span>
+                                            <div>
+                                                <strong>Respiración 4-7-8:</strong> Inhala por 4 segundos, retiene 7, exhala 8.
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item bg-transparent px-0 py-2 border-0">
+                                        <div class="d-flex">
+                                            <span class="badge bg-primary rounded-pill me-2">2</span>
+                                            <div>
+                                                <strong>Respiración diafragmática:</strong> Respira profundamente desde el abdomen.
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item bg-transparent px-0 py-2 border-0">
+                                        <div class="d-flex">
+                                            <span class="badge bg-primary rounded-pill me-2">3</span>
+                                            <div>
+                                                <strong>Respiración alternada:</strong> Alterna la respiración entre fosas nasales.
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=S6CmxoIkHd4&list=PLz0PZkqemCQKdDcbsg-sjtEKdLISImUXN" class="btn btn-outline-primary" target="_blank" rel="noopener">
+                                <i class="fas fa-video me-2"></i>Ver guía completa
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Autoconocimiento Section -->
+        <section id="autoconocimiento" class="mb-5 pt-4">
+            <h2 class="section-heading h3 fw-bold">Autoconocimiento y Crecimiento</h2>
+            <p class="text-muted mb-4">Herramientas para explorar tu interior y desarrollar una comprensión más profunda de ti mismo.</p>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="text-center mb-4">
+                                <img src="/imagenes/Imagen2.png" class="img-fluid rounded" alt="Diario de gratitud" style="max-height: 140px;">
+                            </div>
+                            <h3 class="h5 fw-bold mb-3">Diario de gratitud</h3>
+                            <p class="card-text text-muted mb-4">Plantilla descargable para cultivar el hábito de la gratitud diaria y mejorar tu bienestar emocional.</p>
+                            <a href="https://mindfulscience.es/wp-content/uploads/2024/09/MSC-Diario-de-Gratitud.pdf" class="btn btn-outline-primary w-100" target="_blank" rel="noopener">
+                                <i class="fas fa-file-pdf me-2"></i>Descargar PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="text-center mb-4">
+                                <img src="/imagenes/Imagen4.png" class="img-fluid rounded" alt="Rueda de la vida" style="max-height: 140px;">
+                            </div>
+                            <h3 class="h5 fw-bold mb-3">Rueda de la vida</h3>
+                            <p class="card-text text-muted mb-4">Herramienta interactiva para evaluar diferentes aspectos de tu vida y establecer metas equilibradas.</p>
+                            <a href="https://hakunamatatacoaching.com/wp-content/uploads/2020/06/Ejercicio-7-Rueda-de-la-vida-HM.pdf" class="btn btn-outline-primary w-100" target="_blank" rel="noopener">
+                                <i class="fas fa-file-pdf me-2"></i>Descargar PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="text-center mb-4">
+                                <img src="/imagenes/Imagen5.png" class="img-fluid rounded" alt="Clarificación de valores" style="max-height: 140px;">
+                            </div>
+                            <h3 class="h5 fw-bold mb-3">Clarificación de valores</h3>
+                            <p class="card-text text-muted mb-4">Ejercicios para identificar tus valores fundamentales y alinear tus acciones con ellos.</p>
+                            <a href="http://xn--coruacoaching-lkb.com/tus-valores-un-ejercicio-divertido-para-descubrirlos/" class="btn btn-outline-primary w-100" target="_blank" rel="noopener">
+                                <i class="fas fa-file-pdf me-2"></i>Ver ejercicio
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="text-center mb-4">
+                                <img src="/imagenes/Imagen6.png" class="img-fluid rounded" alt="Registro de emociones" style="max-height: 140px;">
+                            </div>
+                            <h3 class="h5 fw-bold mb-3">Registro de emociones</h3>
+                            <p class="card-text text-muted mb-4">Plantilla para desarrollar mayor conciencia emocional y practicar la regulación afectiva.</p>
+                            <a href="https://www.lantegibatuak.eus/wp-content/uploads/2020/05/Cuaderno-de-ejercicios-de-inteligencia-emocional.pdf" class="btn btn-outline-primary w-100" target="_blank" rel="noopener">
+                                <i class="fas fa-file-pdf me-2"></i>Descargar PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Libros Section -->
+        <section id="libros" class="mb-5 pt-4">
+            <h2 class="section-heading h3 fw-bold">Libros Recomendados</h2>
+            <p class="text-muted mb-4">Una selección de lecturas que pueden enriquecer tu camino hacia el bienestar emocional.</p>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <img src="/imagenes/Imagen8.png" class="card-img-top p-3" alt="Portada de Sal de tu mente, entra en tu vida">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-star text-warning me-1"></i>
+                                <p class="text-muted small mb-0">Steven C. Hayes</p>
+                            </div>
+                            <h3 class="h5 fw-bold mb-3">Sal de tu mente, entra en tu vida</h3>
+                            <p class="card-text text-muted mb-4">Una introducción accesible a la Terapia de Aceptación y Compromiso (ACT).</p>
+                            <a href="https://grupoetapas.com.ar/wp-content/uploads/2020/07/Sal-de-tu-mente-entra-en-tu-vida.pdf" class="btn btn-outline-primary w-100" target="_blank" rel="noopener">
+                                <i class="fas fa-file-pdf me-2"></i>Ver PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <img src="/imagenes/Imagen7.png" class="card-img-top p-3" alt="Portada de El poder del ahora">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-star text-warning me-1"></i>
+                                <p class="text-muted small mb-0">Eckhart Tolle</p>
+                            </div>
+                            <h3 class="h5 fw-bold mb-3">El poder del ahora</h3>
+                            <p class="card-text text-muted mb-4">Una guía para el crecimiento espiritual y la transformación personal.</p>
+                            <a href="https://www.nuevatribuna.es/articulo/cultura---ocio/resumen-analisis-mas-completo-libro-poder-ahora/20230414183157210667.html" class="btn btn-outline-primary w-100" target="_blank" rel="noopener">
+                                <i class="fas fa-file-alt me-2"></i>Ver resumen
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <img src="/imagenes/Imagen9.png" class="card-img-top p-3" alt="Portada de Inteligencia Emocional">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-star text-warning me-1"></i>
+                                <p class="text-muted small mb-0">Daniel Goleman</p>
+                            </div>
+                            <h3 class="h5 fw-bold mb-3">Inteligencia Emocional</h3>
+                            <p class="card-text text-muted mb-4">Por qué puede importar más que el CI para tu desarrollo personal.</p>
+                            <a href="https://iuymca.edu.ar/wp-content/uploads/2022/01/La-Inteligencia-Emocional-Daniel-Goleman-1.pdf" class="btn btn-outline-primary w-100" target="_blank" rel="noopener">
+                                <i class="fas fa-file-pdf me-2"></i>Ver PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <img src="/imagenes/Imagen10.png" class="card-img-top p-3" alt="Portada de Mindfulness en la vida cotidiana">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-star text-warning me-1"></i>
+                                <p class="text-muted small mb-0">Jon Kabat-Zinn</p>
+                            </div>
+                            <h3 class="h5 fw-bold mb-3">Mindfulness en la vida cotidiana</h3>
+                            <p class="card-text text-muted mb-4">Cómo descubrir las claves de la atención plena en tu día a día.</p>
+                            <a href="https://www.budismolibre.org/docs/libros_budistas/Jon_Kabat_Zinn_Mindfulness_en_la_vida_cotidiana.pdf" class="btn btn-outline-primary w-100" target="_blank" rel="noopener">
+                                <i class="fas fa-file-pdf me-2"></i>Ver PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer py-3 text-center text-white mt-5">
+        <div class="container">
+            <div class="row gy-2 text-center text-md-start">
+                <div class="col-md-4">
+                    <h6 class="mb-1">PsycheKinesis</h6>
+                    <p class="mb-1 small opacity-75">Bienestar emocional con tecnología. Psicología y apoyo a un clic.</p>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="mb-1">Enlaces</h6>
+                    <ul class="list-unstyled mb-0 small">
+                        <li><a href="inicio.html" class="text-white text-decoration-none">Inicio</a></li>
+                        <li><a href="chatbot.html" class="text-white text-decoration-none">Chatbot</a></li>
+                        <li><a href="contactos.html" class="text-white text-decoration-none">Contactos</a></li>
+                        <li><a href="nosotros.html" class="text-white text-decoration-none">Nosotros</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="mb-1">Síguenos</h6>
+                    <div class="d-flex justify-content-center justify-content-md-start gap-2">
+                        <a href="https://facebook.com" class="text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com" class="text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="https://twitter.com" class="text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="https://youtube.com" class="text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-2 border-white opacity-25">
+            <div class="text-center small">
+                © 2025 PsycheKinesis. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>

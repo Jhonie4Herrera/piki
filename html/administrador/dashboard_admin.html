@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - PsycheKinesis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00a8e8;
+            --primary-dark: #007bb5;
+            --sidebar-bg: #2c3e50;
+            --sidebar-hover: #34495e;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            background-color: var(--sidebar-bg);
+            color: white;
+            padding-top: 20px;
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.9);
+            padding: 12px 20px;
+            transition: all 0.3s;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: var(--sidebar-hover);
+            color: white;
+        }
+
+        .sidebar .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .table {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .table thead {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .search-bar {
+            max-width: 300px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <!-- Sidebar -->
+            <div class="col-lg-2 sidebar">
+                <div class="text-center mb-4">
+                    <h4>PsycheKinesis</h4>
+                    <p class="small">Panel Administrativo</p>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" onclick="showSection('dashboard')">
+                            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showSection('pacientes')">
+                            <i class="fas fa-user-injured me-2"></i> Pacientes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showSection('profesionales')">
+                            <i class="fas fa-user-md me-2"></i> Profesionales
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showSection('usuarios')">
+                            <i class="fas fa-users me-2"></i> Usuarios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showSection('reportes')">
+                            <i class="fas fa-chart-bar me-2"></i> Reportes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showSection('configuracion')">
+                            <i class="fas fa-cog me-2"></i> Configuración
+                        </a>
+                    </li>
+                </ul>
+                <div class="mt-auto p-3">
+                    <button class="btn btn-danger w-100" onclick="cerrarSesion()">
+                        <a class="btn btn-danger w-100" href="inicio_admin.html" id="logoutButton"><i class="fas fa-sign-out-alt me-2"></i>Cerrar sesión</a>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Contenido Principal -->
+            <div class="col-lg-10 main-content">
+                <!-- Dashboard -->
+                <div id="dashboard" class="section" style="display: block;">
+                    <h2 class="mb-4">Dashboard Administrativo</h2>
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="card text-white bg-primary">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fas fa-user-injured me-2"></i> Pacientes</h5>
+                                    <h3 id="totalPacientes">0</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-white bg-success">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fas fa-user-md me-2"></i> Profesionales</h5>
+                                    <h3 id="totalProfesionales">0</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-white bg-warning">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fas fa-users me-2"></i> Usuarios</h5>
+                                    <h3 id="totalUsuarios">0</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Actividad Reciente</h5>
+                            <ul class="list-group" id="actividadReciente"></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pacientes -->
+                <div id="pacientes" class="section" style="display: none;">
+                    <h2 class="mb-4">Gestión de Pacientes</h2>
+                    <div class="d-flex justify-content-between mb-3">
+                        <input type="text" class="form-control search-bar" id="searchPacientes" placeholder="Buscar pacientes...">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPacienteModal">
+                            <i class="fas fa-plus me-2"></i> Nuevo Paciente
+                        </button>
+                    </div>
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Edad</th>
+                                        <th>Padecimiento</th>
+                                        <th>Profesional</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listaPacientes"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profesionales -->
+                <div id="profesionales" class="section" style="display: none;">
+                    <h2 class="mb-4">Gestión de Profesionales</h2>
+                    <div class="d-flex justify-content-between mb-3">
+                        <input type="text" class="form-control search-bar" id="searchProfesionales" placeholder="Buscar profesionales...">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProfesionalModal">
+                            <i class="fas fa-plus me-2"></i> Nuevo Profesional
+                        </button>
+                    </div>
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Especialidad</th>
+                                        <th>Experiencia</th>
+                                        <th>Pacientes</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listaProfesionales"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Usuarios -->
+                <div id="usuarios" class="section" style="display: none;">
+                    <h2 class="mb-4">Gestión de Usuarios</h2>
+                    <div class="d-flex justify-content-between mb-3">
+                        <input type="text" class="form-control search-bar" id="searchUsuarios" placeholder="Buscar usuarios...">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUsuarioModal">
+                            <i class="fas fa-plus me-2"></i> Nuevo Usuario
+                        </button>
+                    </div>
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Rol</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listaUsuarios"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reportes -->
+                <div id="reportes" class="section" style="display: none;">
+                    <h2 class="mb-4">Reportes</h2>
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Funcionalidad de reportes en desarrollo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configuración -->
+                <div id="configuracion" class="section" style="display: none;">
+                    <h2 class="mb-4">Configuración</h2>
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Configuración del sistema en desarrollo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Agregar Paciente -->
+    <div class="modal fade" id="addPacienteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nuevo Paciente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formAddPaciente">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="pacienteNombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Edad</label>
+                            <input type="number" class="form-control" id="pacienteEdad" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Padecimiento</label>
+                            <input type="text" class="form-control" id="pacientePadecimiento" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Agregar Profesional -->
+    <div class="modal fade" id="addProfesionalModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nuevo Profesional</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formAddProfesional">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="profesionalNombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Especialidad</label>
+                            <input type="text" class="form-control" id="profesionalEspecialidad" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Experiencia (años)</label>
+                            <input type="number" class="form-control" id="profesionalExperiencia" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Agregar Usuario -->
+    <div class="modal fade" id="addUsuarioModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nuevo Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formAddUsuario">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="usuarioNombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Rol</label>
+                            <select class="form-select" id="usuarioRol" required>
+                                <option value="Administrador">Administrador</option>
+                                <option value="Usuario Estándar">Usuario Estándar</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Datos iniciales
+        let profesionales = JSON.parse(localStorage.getItem('profesionales')) || [
+            { id: 1, nombre: "Dr. Juan Pérez", especialidad: "Psicología Clínica", experiencia: "10", pacientes: [1, 2] },
+            { id: 2, nombre: "Dra. María López", especialidad: "Psiquiatría", experiencia: "8", pacientes: [3, 4] }
+        ];
+
+        let pacientes = JSON.parse(localStorage.getItem('pacientes')) || [
+            { id: 1, nombre: "Juan Pérez", edad: 34, padecimiento: "Ansiedad" },
+            { id: 2, nombre: "María Gómez", edad: 28, padecimiento: "Depresión" },
+            { id: 3, nombre: "Carlos Ramírez", edad: 45, padecimiento: "Insomnio" },
+            { id: 4, nombre: "Ana Torres", edad: 38, padecimiento: "Estrés" }
+        ];
+
+        let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [
+            { id: 1, nombre: "Emanuel Logreira", rol: "Administrador" },
+            { id: 2, nombre: "Fabian Diaz", rol: "Administrador" }
+        ];
+
+        let actividad = JSON.parse(localStorage.getItem('actividad')) || [];
+
+        // Funciones de navegación
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => section.style.display = 'none');
+            document.getElementById(sectionId).style.display = 'block';
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            document.querySelector(`[onclick="showSection('${sectionId}')"]`).classList.add('active');
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = "login.html"; // Redirigir a página de login
+        }
+
+        // Actualizar contadores
+        function updateDashboard() {
+            document.getElementById("totalPacientes").textContent = pacientes.length;
+            document.getElementById("totalProfesionales").textContent = profesionales.length;
+            document.getElementById("totalUsuarios").textContent = usuarios.length;
+
+            const actividadList = document.getElementById("actividadReciente");
+            actividadList.innerHTML = '';
+            actividad.slice(-5).reverse().forEach(item => {
+                actividadList.innerHTML += `<li class="list-group-item">${item}</li>`;
+            });
+        }
+
+        // Cargar listas
+        function loadPacientes() {
+            const lista = document.getElementById("listaPacientes");
+            lista.innerHTML = '';
+            pacientes.forEach(p => {
+                const profesional = profesionales.find(prof => prof.pacientes.includes(p.id)) || { nombre: "Sin asignar" };
+                lista.innerHTML += `
+                    <tr>
+                        <td>${p.id}</td>
+                        <td><div class="avatar me-2">${p.nombre.charAt(0)}</div> ${p.nombre}</td>
+                        <td>${p.edad}</td>
+                        <td>${p.padecimiento}</td>
+                        <td>${profesional.nombre}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deletePaciente(${p.id})"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>`;
+            });
+        }
+
+        function loadProfesionales() {
+            const lista = document.getElementById("listaProfesionales");
+            lista.innerHTML = '';
+            profesionales.forEach(p => {
+                lista.innerHTML += `
+                    <tr>
+                        <td>${p.id}</td>
+                        <td><div class="avatar me-2">${p.nombre.charAt(4)}</div> ${p.nombre}</td>
+                        <td>${p.especialidad}</td>
+                        <td>${p.experiencia} años</td>
+                        <td>${p.pacientes.length}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteProfesional(${p.id})"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>`;
+            });
+        }
+
+        function loadUsuarios() {
+            const lista = document.getElementById("listaUsuarios");
+            lista.innerHTML = '';
+            usuarios.forEach(u => {
+                lista.innerHTML += `
+                    <tr>
+                        <td>${u.id}</td>
+                        <td><div class="avatar me-2">${u.nombre.charAt(0)}</div> ${u.nombre}</td>
+                        <td>${u.rol}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteUsuario(${u.id})"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>`;
+            });
+        }
+
+        // Funciones de eliminación
+        function deletePaciente(id) {
+            pacientes = pacientes.filter(p => p.id !== id);
+            profesionales.forEach(prof => prof.pacientes = prof.pacientes.filter(pid => pid !== id));
+            actividad.push(`Paciente ID ${id} eliminado - ${new Date().toLocaleString()}`);
+            saveData();
+            loadPacientes();
+            updateDashboard();
+        }
+
+        function deleteProfesional(id) {
+            profesionales = profesionales.filter(p => p.id !== id);
+            actividad.push(`Profesional ID ${id} eliminado - ${new Date().toLocaleString()}`);
+            saveData();
+            loadProfesionales();
+            updateDashboard();
+        }
+
+        function deleteUsuario(id) {
+            usuarios = usuarios.filter(u => u.id !== id);
+            actividad.push(`Usuario ID ${id} eliminado - ${new Date().toLocaleString()}`);
+            saveData();
+            loadUsuarios();
+            updateDashboard();
+        }
+
+        // Guardar datos
+        function saveData() {
+            localStorage.setItem('pacientes', JSON.stringify(pacientes));
+            localStorage.setItem('profesionales', JSON.stringify(profesionales));
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+            localStorage.setItem('actividad', JSON.stringify(actividad));
+        }
+
+        // Eventos de formularios
+        document.getElementById("formAddPaciente").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const nuevoPaciente = {
+                id: pacientes.length + 1,
+                nombre: document.getElementById("pacienteNombre").value,
+                edad: parseInt(document.getElementById("pacienteEdad").value),
+                padecimiento: document.getElementById("pacientePadecimiento").value
+            };
+            pacientes.push(nuevoPaciente);
+            actividad.push(`Paciente ${nuevoPaciente.nombre} agregado - ${new Date().toLocaleString()}`);
+            saveData();
+            loadPacientes();
+            updateDashboard();
+            bootstrap.Modal.getInstance(document.getElementById("addPacienteModal")).hide();
+            this.reset();
+        });
+
+        document.getElementById("formAddProfesional").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const nuevoProfesional = {
+                id: profesionales.length + 1,
+                nombre: document.getElementById("profesionalNombre").value,
+                especialidad: document.getElementById("profesionalEspecialidad").value,
+                experiencia: document.getElementById("profesionalExperiencia").value,
+                pacientes: []
+            };
+            profesionales.push(nuevoProfesional);
+            actividad.push(`Profesional ${nuevoProfesional.nombre} agregado - ${new Date().toLocaleString()}`);
+            saveData();
+            loadProfesionales();
+            updateDashboard();
+            bootstrap.Modal.getInstance(document.getElementById("addProfesionalModal")).hide();
+            this.reset();
+        });
+
+        document.getElementById("formAddUsuario").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const nuevoUsuario = {
+                id: usuarios.length + 1,
+                nombre: document.getElementById("usuarioNombre").value,
+                rol: document.getElementById("usuarioRol").value
+            };
+            usuarios.push(nuevoUsuario);
+            actividad.push(`Usuario ${nuevoUsuario.nombre} agregado - ${new Date().toLocaleString()}`);
+            saveData();
+            loadUsuarios();
+            updateDashboard();
+            bootstrap.Modal.getInstance(document.getElementById("addUsuarioModal")).hide();
+            this.reset();
+        });
+
+        // Búsqueda dinámica
+        document.getElementById("searchPacientes").addEventListener("input", function() {
+            const texto = this.value.toLowerCase();
+            document.querySelectorAll("#listaPacientes tr").forEach(row => {
+                row.style.display = row.cells[1].textContent.toLowerCase().includes(texto) ? "" : "none";
+            });
+        });
+
+        document.getElementById("searchProfesionales").addEventListener("input", function() {
+            const texto = this.value.toLowerCase();
+            document.querySelectorAll("#listaProfesionales tr").forEach(row => {
+                row.style.display = row.cells[1].textContent.toLowerCase().includes(texto) ? "" : "none";
+            });
+        });
+
+        document.getElementById("searchUsuarios").addEventListener("input", function() {
+            const texto = this.value.toLowerCase();
+            document.querySelectorAll("#listaUsuarios tr").forEach(row => {
+                row.style.display = row.cells[1].textContent.toLowerCase().includes(texto) ? "" : "none";
+            });
+        });
+
+        // Inicialización
+        updateDashboard();
+        loadPacientes();
+        loadProfesionales();
+        loadUsuarios();
+    </script>
+</body>
+</html>

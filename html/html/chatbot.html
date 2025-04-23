@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PsycheKinesis - Chatbot</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00a8e8;
+            --primary-color-dark: #007bb5;
+        }
+
+        .navbar, .footer {
+            background-color: var(--primary-color);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-color-dark);
+            border-color: var(--primary-color-dark);
+        }
+
+        .chat-box {
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 0.5rem;
+            border: 1px solid #ddd;
+        }
+
+        .chat-input {
+            margin-top: 1rem;
+        }
+
+        .user-message {
+            text-align: right;
+            color: #007bb5;
+            font-weight: bold;
+        }
+
+        .bot-message {
+            text-align: left;
+            color: #333;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">PsycheKinesis - Chatbot</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="inicio.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="bienestar.html">Bienestar</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contactos.html">Contactos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="nosotros.html">Nosotros</a></li>
+                        <li class="nav-item"><a class="nav-link" href="recursos.html">Recursos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="pregfrecu.html">Preguntas Frecuentes</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow">
+                    <div class="card-body p-4">
+                        <h2 class="text-center mb-4">Chatbot de Asistencia</h2>
+                        <div class="chat-box">
+                            <div class="chat-messages" id="chat-messages">
+                                <div class="alert alert-info">
+                                    Hola 👋 Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?
+                                </div>
+                            </div>
+                            <div class="chat-input">
+                                <div class="input-group">
+                                    <input type="text" id="user-input" class="form-control" placeholder="Escribe tu mensaje...">
+                                    <button id="send-button" class="btn btn-primary">Enviar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer py-3 text-center text-white mt-5">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 PsycheKinesis. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        async function enviarMensaje() {
+            let input = document.getElementById("user-input");
+            let mensaje = input.value.trim();
+            if (mensaje === "") return;
+
+            let chatBox = document.getElementById("chat-messages");
+            chatBox.innerHTML += `<p class="user-message"><strong>Tú:</strong> ${mensaje}</p>`;
+            input.value = "";
+
+            try {
+                let response = await fetch("http://localhost:5005/webhooks/rest/webhook", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ sender: "user", message: mensaje })
+                });
+
+                let data = await response.json();
+                data.forEach(botResponse => {
+                    chatBox.innerHTML += `<p class="bot-message"><strong>Bot:</strong> ${botResponse.text}</p>`;
+                });
+            } catch (error) {
+                console.error("Error al conectar con Rasa:", error);
+                chatBox.innerHTML += `<p class="bot-message text-danger"><strong>Bot:</strong> Error al conectar con el servidor.</p>`;
+            }
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        document.getElementById("send-button").addEventListener("click", enviarMensaje);
+        document.getElementById("user-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") enviarMensaje();
+        });
+    </script>
+</body>
+</html>

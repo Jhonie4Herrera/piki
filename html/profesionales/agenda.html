@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PsycheKinesis - Agenda</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Fullcalendar -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css" rel="stylesheet">
+    <style>
+        .navbar {
+            background-color: #00a8e8
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: white;
+        }
+        .nav-link, .navbar-nav .nav-link.active {
+            color: rgba(255,255,255,0.9);
+        }
+        .nav-link:hover {
+            color: white;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .fc-event {
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .calendar-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        .patient-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .patient-card {
+            transition: all 0.2s ease;
+        }
+        .patient-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+        .fc-header-toolbar {
+            margin-bottom: 1.5rem!important;
+        }
+        .status-pending {
+            background-color: #ffc107;
+        }
+        .status-confirmed {
+            background-color: #28a745;
+        }
+        .status-cancelled {
+            background-color: #dc3545;
+        }
+        .status-completed {
+            background-color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand">
+                    <i class="fas fa-brain me-2"></i>PsycheKinesis 
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="inicio_doctor.html"><i class="fas fa-home me-1"></i> Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="agenda.html"><i class="fas fa-calendar-alt me-1"></i> Agenda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="estadisticas.html"><i class="fas fa-chart-line me-1"></i> Estadísticas</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-circle me-1"></i> <span id="nombreUsuario">Dr. Usuario</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="plataforma_doctor.html"><i class="fas fa-sign-out-alt me-2"></i>Salir</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container my-4">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card calendar-container">
+                    <div class="card-body">
+                        <h2 class="mb-4">
+                            <i class="fas fa-calendar-alt me-2 text-primary"></i>
+                            Agenda de Consultas
+                        </h2>
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i> Nueva Cita</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="appointmentForm">
+                            <div class="mb-3">
+                                <label for="patientName" class="form-label">Paciente</label>
+                                <select class="form-select" id="patientName" required>
+                                    <option value="" selected disabled>Seleccionar paciente</option>
+                                    <option value="1">Ana García</option>
+                                    <option value="2">Carlos Rodríguez</option>
+                                    <option value="3">Luisa Martínez</option>
+                                    <option value="4">Miguel Sánchez</option>
+                                    <option value="5">Sofía López</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="appointmentDate" class="form-label">Fecha</label>
+                                <input type="date" class="form-control" id="appointmentDate" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="appointmentTime" class="form-label">Hora</label>
+                                <input type="time" class="form-control" id="appointmentTime" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="appointmentDuration" class="form-label">Duración</label>
+                                <select class="form-select" id="appointmentDuration" required>
+                                    <option value="30">30 minutos</option>
+                                    <option value="45">45 minutos</option>
+                                    <option value="60" selected>1 hora</option>
+                                    <option value="90">1 hora 30 minutos</option>
+                                    <option value="120">2 horas</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="appointmentType" class="form-label">Tipo de Consulta</label>
+                                <select class="form-select" id="appointmentType" required>
+                                    <option value="Primera consulta">Primera consulta</option>
+                                    <option value="Seguimiento" selected>Seguimiento</option>
+                                    <option value="Evaluación">Evaluación</option>
+                                    <option value="Terapia de emergencia">Terapia de emergencia</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="appointmentNotes" class="form-label">Notas</label>
+                                <textarea class="form-control" id="appointmentNotes" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-save me-2"></i>Guardar Cita
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0"><i class="fas fa-clock me-2"></i> Próximas Citas</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-0">Ana García</h6>
+                                    <small class="text-muted">Hoy - 10:00</small>
+                                </div>
+                                <span class="badge status-confirmed rounded-pill">Confirmada</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-0">Carlos Rodríguez</h6>
+                                    <small class="text-muted">Hoy - 15:30</small>
+                                </div>
+                                <span class="badge status-pending rounded-pill">Pendiente</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-0">Miguel Sánchez</h6>
+                                    <small class="text-muted">Mañana - 09:15</small>
+                                </div>
+                                <span class="badge status-confirmed rounded-pill">Confirmada</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para detalles de cita -->
+    <div class="modal fade" id="appointmentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detalles de la Cita</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <h5 id="modal-patient-name">Nombre del Paciente</h5>
+                        <p id="modal-appointment-time" class="text-muted"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold">Tipo de Consulta:</label>
+                        <p id="modal-appointment-type">Seguimiento</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold">Notas:</label>
+                        <p id="modal-appointment-notes">Notas de la consulta.</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold">Estado:</label>
+                        <span id="modal-appointment-status" class="badge status-confirmed">Confirmada</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-warning">
+                        <i class="fas fa-edit me-1"></i>Editar
+                    </button>
+                    <button type="button" class="btn btn-danger">
+                        <i class="fas fa-trash-alt me-1"></i>Cancelar Cita
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- FullCalendar JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/locales/es.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar FullCalendar
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                locale: 'es',
+                initialView: 'timeGridWeek',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                buttonText: {
+                    today: 'Hoy',
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Día'
+                },
+                slotMinTime: '08:00:00',
+                slotMaxTime: '20:00:00',
+                allDaySlot: false,
+                height: 650,
+                slotDuration: '00:15:00',
+                slotLabelInterval: '01:00',
+                businessHours: {
+                    daysOfWeek: [ 1, 2, 3, 4, 5 ],
+                    startTime: '09:00',
+                    endTime: '19:00',
+                },
+                events: [
+                    {
+                        title: 'Ana García',
+                        start: '2025-04-03T10:00:00',
+                        end: '2025-04-03T11:00:00',
+                        backgroundColor: '#28a745',
+                        borderColor: '#28a745',
+                        extendedProps: {
+                            patientId: 1,
+                            type: 'Seguimiento',
+                            status: 'Confirmada',
+                            notes: 'Terapia cognitivo-conductual. Seguimiento de ejercicios asignados.'
+                        }
+                    },
+                    {
+                        title: 'Carlos Rodríguez',
+                        start: '2025-04-03T15:30:00',
+                        end: '2025-04-03T16:30:00',
+                        backgroundColor: '#ffc107',
+                        borderColor: '#ffc107',
+                        extendedProps: {
+                            patientId: 2,
+                            type: 'Primera consulta',
+                            status: 'Pendiente',
+                            notes: 'Primera evaluación. Temas de ansiedad.'
+                        }
+                    },
+                    {
+                        title: 'Miguel Sánchez',
+                        start: '2025-04-04T09:15:00',
+                        end: '2025-04-04T10:15:00',
+                        backgroundColor: '#28a745',
+                        borderColor: '#28a745',
+                        extendedProps: {
+                            patientId: 4,
+                            type: 'Seguimiento',
+                            status: 'Confirmada',
+                            notes: 'Continuar con técnicas de mindfulness.'
+                        }
+                    }
+                ],
+                eventClick: function(info) {
+                    // Mostrar modal con información del evento
+                    document.getElementById('modal-patient-name').textContent = info.event.title;
+                    document.getElementById('modal-appointment-time').textContent = new Date(info.event.start).toLocaleString('es-ES', {
+                        weekday: 'long', 
+                        day: 'numeric', 
+                        month: 'long', 
+                        hour: '2-digit', 
+                        minute: '2-digit'
+                    });
+                    document.getElementById('modal-appointment-type').textContent = info.event.extendedProps.type;
+                    document.getElementById('modal-appointment-notes').textContent = info.event.extendedProps.notes;
+                    
+                    var statusBadge = document.getElementById('modal-appointment-status');
+                    statusBadge.textContent = info.event.extendedProps.status;
+                    statusBadge.className = 'badge';
+                    
+                    if (info.event.extendedProps.status === 'Confirmada') {
+                        statusBadge.classList.add('status-confirmed');
+                    } else if (info.event.extendedProps.status === 'Pendiente') {
+                        statusBadge.classList.add('status-pending');
+                    } else if (info.event.extendedProps.status === 'Cancelada') {
+                        statusBadge.classList.add('status-cancelled');
+                    } else {
+                        statusBadge.classList.add('status-completed');
+                    }
+                    
+                    var appointmentModal = new bootstrap.Modal(document.getElementById('appointmentModal'));
+                    appointmentModal.show();
+                }
+            });
+            calendar.render();
+            
+            // Mostrar la fecha actual en el campo de fecha
+            var today = new Date();
+            var year = today.getFullYear();
+            var month = (today.getMonth() + 1).toString().padStart(2, '0');
+            var day = today.getDate().toString().padStart(2, '0');
+            document.getElementById('appointmentDate').value = `${year}-${month}-${day}`;
+
+            // Manejar el formulario de nueva cita
+            document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Aquí iría la lógica para guardar la cita
+                // Por ahora solo mostraremos un mensaje y añadiremos el evento al calendario
+                
+                var patientSelect = document.getElementById('patientName');
+                var patientName = patientSelect.options[patientSelect.selectedIndex].text;
+                var appointmentDate = document.getElementById('appointmentDate').value;
+                var appointmentTime = document.getElementById('appointmentTime').value;
+                var appointmentDuration = parseInt(document.getElementById('appointmentDuration').value);
+                var appointmentType = document.getElementById('appointmentType').value;
+                var appointmentNotes = document.getElementById('appointmentNotes').value;
+                
+                // Crear fecha de inicio
+                var startDateTime = new Date(`${appointmentDate}T${appointmentTime}`);
+                
+                // Crear fecha de fin sumando la duración
+                var endDateTime = new Date(startDateTime);
+                endDateTime.setMinutes(endDateTime.getMinutes() + appointmentDuration);
+                
+                // Añadir evento al calendario
+                calendar.addEvent({
+                    title: patientName,
+                    start: startDateTime,
+                    end: endDateTime,
+                    backgroundColor: '#ffc107',
+                    borderColor: '#ffc107',
+                    extendedProps: {
+                        patientId: patientSelect.value,
+                        type: appointmentType,
+                        status: 'Pendiente',
+                        notes: appointmentNotes
+                    }
+                });
+                
+                // Resetear formulario
+                document.getElementById('appointmentForm').reset();
+                document.getElementById('appointmentDate').value = `${year}-${month}-${day}`;
+                
+                // Notificar al usuario
+                alert('Cita guardada correctamente.');
+            });
+            
+            // Obtener nombre de usuario del localStorage
+            const nombreUsuario = localStorage.getItem('nombreUsuario') || 'Dr. Usuario';
+            document.getElementById('nombreUsuario').textContent = nombreUsuario;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Profesional - PsycheKinesis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --dark-text: #2c3e50;
+            --light-text: #ecf0f1;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+        }
+        
+        .navbar {
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .footer {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-info {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-info:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .card {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background-color: var(--secondary-color);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .table {
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .table-dark {
+            background-color: var(--primary-color);
+        }
+        
+        .badge {
+            padding: 5px 10px;
+            border-radius: 50px;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: var(--secondary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin: 0 auto 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" href="/index.html">
+                    <i class="fas fa-brain me-2"></i>
+                    <span>PsycheKinesis</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="inicio.html">
+                                <i class="fas fa-home me-1"></i> Inicio
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="lista_prof.html">
+                                <i class="fas fa-user-md me-1"></i> Profesionales
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="detalle_usuario.html">
+                                <i class="fas fa-users me-1"></i> Pacientes
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container py-5 mb-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="lista_profesionales.html">Profesionales</a></li>
+                <li class="breadcrumb-item active" id="breadcrumbNombre">Detalle del Profesional</li>
+            </ol>
+        </nav>
+        
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <div class="card-header py-3">
+                        <h3 class="m-0">Perfil Profesional</h3>
+                    </div>
+                    <div class="card-body text-center" id="infoProfesional">
+                        <!-- Información del profesional cargada dinámicamente -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center py-3">
+                        <h3 class="m-0">Pacientes Asignados</h3>
+                        <span class="badge bg-primary" id="totalPacientes">0 pacientes</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Edad</th>
+                                        <th>Padecimiento</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaPacientes">
+                                    <!-- Datos cargados dinámicamente -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer py-4 text-center">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4 text-md-start">
+                    <a href="#" class="text-decoration-none text-light">
+                        <i class="fas fa-brain me-2"></i>
+                        <span class="fw-bold">PsycheKinesis</span>
+                    </a>
+                </div>
+                <div class="col-md-4 my-3 my-md-0">
+                    <p class="mb-0">&copy; 2025 PsycheKinesis. Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <a href="#" class="text-light mx-2"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-light mx-2"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-light mx-2"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Datos de profesionales extraídos de la lista principal
+        const profesionales = [
+            { id: 1, nombre: "Dr. Juan Pérez", especialidad: "Psicología Clínica", experiencia: "10 años", pacientes: [1, 2], email: "juan.perez@psychekinesis.com", telefono: "+1 (555) 123-4567" },
+            { id: 2, nombre: "Dra. María López", especialidad: "Psiquiatría", experiencia: "8 años", pacientes: [3, 4], email: "maria.lopez@psychekinesis.com", telefono: "+1 (555) 234-5678" },
+            { id: 3, nombre: "Lic. Pedro Gómez", especialidad: "Terapia Familiar", experiencia: "12 años", pacientes: [5, 6], email: "pedro.gomez@psychekinesis.com", telefono: "+1 (555) 345-6789" },
+            { id: 4, nombre: "Dra. Ana Rodríguez", especialidad: "Neuropsicología", experiencia: "7 años", pacientes: [7, 8], email: "ana.rodriguez@psychekinesis.com", telefono: "+1 (555) 456-7890" }
+        ];
+
+        // Datos de pacientes asignados
+        const pacientes = [
+            { id: 1, nombre: "Juan Pérez", edad: 34, padecimiento: "Ansiedad Generalizada", estado: "En tratamiento" },
+            { id: 2, nombre: "María Gómez", edad: 28, padecimiento: "Depresión Moderada", estado: "En evaluación" },
+            { id: 3, nombre: "Carlos Ramírez", edad: 45, padecimiento: "Trastorno del Sueño", estado: "En tratamiento" },
+            { id: 4, nombre: "Ana Torres", edad: 38, padecimiento: "Estrés Postraumático", estado: "En seguimiento" },
+            { id: 5, nombre: "Luis Méndez", edad: 50, padecimiento: "Problemas de Pareja", estado: "Nuevo" },
+            { id: 6, nombre: "Carmen Silva", edad: 30, padecimiento: "Conflictos Familiares", estado: "En tratamiento" },
+            { id: 7, nombre: "Raúl Castillo", edad: 60, padecimiento: "Deterioro Cognitivo", estado: "En evaluación" },
+            { id: 8, nombre: "Paola Herrera", edad: 42, padecimiento: "Déficit de Atención", estado: "En seguimiento" }
+        ];
+
+        // Obtener el ID del profesional desde la URL
+        function getParameterByName(name, url = window.location.href) {
+            name = name.replace(/[[\]]/g, '\\$&');
+            const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        const profesionalId = parseInt(getParameterByName('id')) || 1;
+        const profesional = profesionales.find(p => p.id === profesionalId);
+
+        if (profesional) {
+            // Actualizar el breadcrumb
+            document.getElementById("breadcrumbNombre").textContent = profesional.nombre;
+            
+            // Mostrar información del profesional
+            document.getElementById("infoProfesional").innerHTML = `
+                <div class="profile-avatar">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h4 class="mb-3">${profesional.nombre}</h4>
+                <div class="mb-3">
+                    <span class="badge bg-primary">${profesional.especialidad}</span>
+                </div>
+                <div class="text-start">
+                    <p class="mb-2"><i class="fas fa-briefcase me-2"></i> <strong>Experiencia:</strong> ${profesional.experiencia}</p>
+                    <p class="mb-2"><i class="fas fa-envelope me-2"></i> <strong>Email:</strong> ${profesional.email}</p>
+                    <p class="mb-2"><i class="fas fa-phone me-2"></i> <strong>Teléfono:</strong> ${profesional.telefono}</p>
+                    <p class="mb-2"><i class="fas fa-users me-2"></i> <strong>Pacientes:</strong> ${profesional.pacientes.length}</p>
+                </div>
+                <div class="mt-3">
+                    <a href="editar_profesional.html?id=${profesional.id}" class="btn btn-primary">
+                        <i class="fas fa-edit me-1"></i> Editar Perfil
+                    </a>
+                </div>
+            `;
+
+            // Mostrar pacientes del profesional
+            const tablaPacientes = document.getElementById("tablaPacientes");
+            const pacientesAsignados = profesional.pacientes.map(pacienteId => 
+                pacientes.find(p => p.id === pacienteId)
+            ).filter(Boolean);
+            
+            // Actualizar contador de pacientes
+            document.getElementById("totalPacientes").textContent = `${pacientesAsignados.length} pacientes`;
+            
+            if (pacientesAsignados.length > 0) {
+                pacientesAsignados.forEach(paciente => {
+                    const fila = document.createElement("tr");
+                    const estadoClass = {
+                        'En tratamiento': 'success',
+                        'En evaluación': 'warning',
+                        'En seguimiento': 'info',
+                        'Nuevo': 'primary'
+                    }[paciente.estado] || 'secondary';
+                    
+                    fila.innerHTML = `
+                        <td>${paciente.id}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="me-2">
+                                    <i class="fas fa-user text-secondary"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-bold">${paciente.nombre}</div>
+                                    <div class="small text-muted">
+                                        <span class="badge bg-${estadoClass}">${paciente.estado}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${paciente.edad}</td>
+                        <td>${paciente.padecimiento}</td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="seguimiento_pacientes.html?id=${paciente.id}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-clipboard-list me-1"></i> Seguimiento
+                                </a>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" 
+                                    onclick="abrirHistorialPaciente(${paciente.id})">
+                                    <i class="fas fa-history"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tablaPacientes.appendChild(fila);
+                });
+            } else {
+                tablaPacientes.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center py-3">
+                            <i class="fas fa-user-slash me-2 text-muted"></i>
+                            No hay pacientes asignados a este profesional
+                        </td>
+                    </tr>
+                `;
+            }
+        } else {
+            document.getElementById("infoProfesional").innerHTML = `
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    No se encontró información para el profesional con ID ${profesionalId}
+                </div>
+            `;
+            
+            document.getElementById("tablaPacientes").innerHTML = `
+                <tr>
+                    <td colspan="5" class="text-center py-3">
+                        <i class="fas fa-exclamation-circle me-2 text-muted"></i>
+                        No hay datos disponibles
+                    </td>
+                </tr>
+            `;
+        }
+        
+        // Función para ver el historial del paciente
+        function abrirHistorialPaciente(pacienteId) {
+            const paciente = pacientes.find(p => p.id === pacienteId);
+            if (paciente) {
+                alert(`Historial de ${paciente.nombre}:\n- Diagnóstico: ${paciente.padecimiento}\n- Estado actual: ${paciente.estado}\n- Edad: ${paciente.edad} años`);
+            }
+        }
+    </script>
+</body>
+</html>

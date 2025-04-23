@@ -1,0 +1,97 @@
+-- Estructura de tabla para la tabla usuarios
+CREATE TABLE usuarios (
+  id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  email varchar(255) DEFAULT NULL,
+  nombre_c varchar(255) DEFAULT NULL,
+  rol enum('paciente','profesional','admin') NOT NULL,
+  genero enum('Masculino','Femenino','Otro') DEFAULT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY email (email),
+  UNIQUE KEY nombre_c (nombre_c)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Estructura de tabla para la tabla profesionales
+CREATE TABLE profesionales (
+  id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  id_usuario bigint(20) UNSIGNED NOT NULL,
+  nombre varchar(255) NOT NULL,
+  apellido varchar(255) NOT NULL,
+  numero_licencia varchar(50) NOT NULL UNIQUE,
+  tipo_profesional enum('psicologo','psiquiatra') NOT NULL,
+  numero_contacto varchar(20) DEFAULT NULL,
+  PRIMARY KEY (id),
+  KEY id_usuario (id_usuario),
+  CONSTRAINT profesionales_ibfk_1 FOREIGN KEY (id_usuario) REFERENCES usuarios (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Estructura de tabla para la tabla pacientes
+CREATE TABLE pacientes (
+  id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  id_usuario bigint(20) UNSIGNED NOT NULL,
+  nombre varchar(255) NOT NULL,
+  apellido varchar(255) NOT NULL,
+  fecha_nacimiento date DEFAULT NULL,
+  genero enum('Masculino','Femenino','Otro') DEFAULT NULL,
+  numero_contacto varchar(20) DEFAULT NULL,
+  direccion text DEFAULT NULL,
+  PRIMARY KEY (id),
+  KEY id_usuario (id_usuario),
+  CONSTRAINT pacientes_ibfk_1 FOREIGN KEY (id_usuario) REFERENCES usuarios (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Estructura de tabla para la tabla registros_salud_mental
+CREATE TABLE registros_salud_mental (
+  id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  id_paciente bigint(20) UNSIGNED NOT NULL,
+  fecha_registro date NOT NULL,
+  estado_animo text DEFAULT NULL,
+  notas text DEFAULT NULL,
+  fecha_creacion timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (id),
+  KEY id_paciente (id_paciente),
+  CONSTRAINT registros_salud_mental_ibfk_1 FOREIGN KEY (id_paciente) REFERENCES pacientes (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+__________________________________________________________creacion ^
+
+
+
+__________________________________________________insert
+
+
+
+-- Insertar usuarios
+INSERT INTO usuarios (email, nombre_c, rol, genero) VALUES
+('paciente1@example.com', 'Paciente Uno', 'paciente', 'Masculino'),
+('paciente2@example.com', 'Paciente Dos', 'paciente', 'Femenino'),
+('paciente3@example.com', 'Paciente Tres', 'paciente', 'Masculino'),
+('paciente4@example.com', 'Paciente Cuatro', 'paciente', 'Femenino'),
+('profesional1@example.com', 'Profesional Uno', 'profesional', 'Masculino'),
+('profesional2@example.com', 'Profesional Dos', 'profesional', 'Femenino'),
+('profesional3@example.com', 'Profesional Tres', 'profesional', 'Masculino'),
+('profesional4@example.com', 'Profesional Cuatro', 'profesional', 'Femenino');
+
+-- Insertar pacientes
+INSERT INTO pacientes (id_usuario, nombre, apellido, fecha_nacimiento, genero, numero_contacto, direccion) VALUES
+(1, 'Paciente', 'Uno', '1990-05-14', 'Masculino', '555-1111', 'Calle 123'),
+(2, 'Paciente', 'Dos', '1985-08-22', 'Femenino', '555-2222', 'Avenida 456'),
+(3, 'Paciente', 'Tres', '2000-12-10', 'Masculino', '555-3333', 'Carrera 789'),
+(4, 'Paciente', 'Cuatro', '1995-06-30', 'Femenino', '555-4444', 'Plaza 321');
+
+-- Insertar profesionales
+INSERT INTO profesionales (id_usuario, nombre, apellido, numero_licencia, tipo_profesional, numero_contacto) VALUES
+(5, 'Profesional', 'Uno', 'LIC12345', 'psicologo', '555-5555'),
+(6, 'Profesional', 'Dos', 'LIC67890', 'psiquiatra', '555-6666'),
+(7, 'Profesional', 'Tres', 'LIC54321', 'psicologo', '555-7777'),
+(8, 'Profesional', 'Cuatro', 'LIC09876', 'psiquiatra', '555-8888');
+
+-- Insertar especializaciones
+INSERT INTO especializaciones (id_profesional, especialidad) VALUES
+(1, 'Psicoterapia Infantil'),
+(2, 'Psiquiatría General'),
+(3, 'Psicología Clínica'),
+(4, 'Neuropsiquiatría'),
+
+

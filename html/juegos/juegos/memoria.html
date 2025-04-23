@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Memoria - PsycheKinesis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #e3f2fd;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .stats {
+            display: flex;
+            width: 400px;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .stat {
+            background-color: #64b5f6;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 400px;
+        }
+        .card {
+            width: 80px;
+            height: 100px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+        .card-front {
+            background-color: #64b5f6;
+            color: white;
+        }
+        .card-back {
+            background-color: #ffffff;
+            color: #2c3e50;
+            transform: rotateY(180deg);
+        }
+        .button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #43a047;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .button:hover {
+            background-color: #2e7d32;
+        }
+        .message {
+            margin-top: 15px;
+            font-size: 18px;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <h1>Juego de Memoria - PsycheKinesis</h1>
+         
+    <!-- Audio background -->
+    <audio id="background-music" loop>
+        <source src="musica/memoria.mp3" type="audio/mp3">
+        Tu navegador no soporta la etiqueta de audio.
+    </audio>
+    
+    <!-- Button to play music (for browsers that block autoplay) -->
+    <button onclick="document.getElementById('background-music').play()">Reproducir Música</button>
+
+        
+    <div class="stats">
+        <div class="stat">Intentos: <span id="attempts">0</span></div>
+        <div class="stat">Pares: <span id="pairs">0</span> / 8</div>
+    </div>
+    <div class="game-board" id="gameBoard"></div>
+    <button class="button" id="resetButton">Reiniciar</button>
+    <p class="message" id="message"></p>
+    
+    <script>
+        const icons = ['🧘‍♂️', '💖', '🌿', '☀️', '🎵', '📖', '😌', '✨'];
+        let cards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let attempts = 0;
+        let canFlip = true;
+        const messages = [
+            "Sigue así! 💪", "Respira y concéntrate 🌿", "Eres increíble! 💖", "Enfócate en el momento presente ☀️"
+        ];
+        
+        const gameBoard = document.getElementById('gameBoard');
+        const attemptsDisplay = document.getElementById('attempts');
+        const pairsDisplay = document.getElementById('pairs');
+        const resetButton = document.getElementById('resetButton');
+        const messageDisplay = document.getElementById('message');
+
+        function initGame() {
+            cards = [];
+            flippedCards = [];
+            matchedPairs = 0;
+            attempts = 0;
+            canFlip = true;
+            attemptsDisplay.textContent = attempts;
+            pairsDisplay.textContent = matchedPairs;
+            gameBoard.innerHTML = '';
+            messageDisplay.textContent = '';
+            
+            const iconPairs = [...icons, ...icons];
+            shuffle(iconPairs);
+            
+            iconPairs.forEach((icon, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.value = icon;
+                
+                card.innerHTML = `
+                    <div class="card-inner">
+                        <div class="card-front">?</div>
+                        <div class="card-back">${icon}</div>
+                    </div>
+                `;
+                
+                card.addEventListener('click', () => flipCard(card));
+                gameBoard.appendChild(card);
+                cards.push(card);
+            });
+        }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function flipCard(card) {
+            if (!canFlip || flippedCards.includes(card) || card.classList.contains('matched')) {
+                return;
+            }
+            
+            card.classList.add('flipped');
+            flippedCards.push(card);
+            
+            if (flippedCards.length === 2) {
+                canFlip = false;
+                attempts++;
+                attemptsDisplay.textContent = attempts;
+                
+                const [card1, card2] = flippedCards;
+                
+                if (card1.dataset.value === card2.dataset.value) {
+                    card1.classList.add('matched');
+                    card2.classList.add('matched');
+                    matchedPairs++;
+                    pairsDisplay.textContent = matchedPairs;
+                    messageDisplay.textContent = messages[Math.floor(Math.random() * messages.length)];
+                    flippedCards = [];
+                    canFlip = true;
+                } else {
+                    setTimeout(() => {
+                        card1.classList.remove('flipped');
+                        card2.classList.remove('flipped');
+                        flippedCards = [];
+                        canFlip = true;
+                    }, 1000);
+                }
+            }
+        }
+        
+        resetButton.addEventListener('click', initGame);
+        initGame();
+    </script>
+</body>
+</html>

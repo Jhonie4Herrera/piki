@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | PsycheKinesis</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/a2e0bf0a2e.js" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --primary: #00a8e8;
+            --primary-dark: #007cb1;
+            --secondary: #6c757d;
+            --success: #28a745;
+            --info: #17a2b8;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .navbar {
+            background-color: var(--primary);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            color: white;
+        }
+        
+        .nav-link, .navbar-nav .nav-link.active {
+            color: rgba(255,255,255,0.9);
+        }
+        
+        .nav-link:hover {
+            color: white;
+        }
+        
+        .dashboard-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .dashboard-icon {
+            font-size: 2rem;
+            height: 60px;
+            width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .quick-actions .card {
+            transition: all 0.3s ease;
+        }
+        
+        .quick-actions .card:hover {
+            background-color: #f8f9fa;
+            cursor: pointer;
+        }
+        
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+        }
+        
+        .notification-dot {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            background-color: var(--danger);
+            border-radius: 50%;
+        }
+        
+        .alert-message {
+            border-left: 4px solid var(--primary);
+            background-color: rgba(0,168,232,0.05);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand">
+                    <i class="fas fa-brain me-2"></i>PsycheKinesis
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ">
+                        
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-bell me-1"></i>
+                                <span class="badge rounded-pill bg-danger">3</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><h6 class="dropdown-header">Notificaciones</h6></li>
+                                <li><a class="dropdown-item" href="cita.html">Recordatorio: Cita mañana 10:00</a></li>
+                                <li><a class="dropdown-item" href="chat.html">Mensaje nuevo de Dr. González</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-center" href="#">Ver todas</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-1"></i> <span id="nombreUsuario">Ana López</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="pasiente_dashboard.html"><i class="fas fa-user me-2"></i>Inicio</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/html/ingreso.html" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt me-2"></i>Cerrar sesión</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container py-5">
+        <!-- Banner de bienvenida -->
+        <div class="row mb-4">
+            <div class="col-lg-12">
+                <div class="card bg-primary text-white">
+                    <div class="card-body py-4">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h2 class="mb-2">Bienvenido/a, <span id="nombreUsuarioBanner">Ana</span></h2>
+                                <p class="mb-0">Tu próxima cita está programada para el <strong>15 de Abril a las 10:00</strong> con la Dra. María González.</p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resumen y estadísticas -->
+        <div class="row mb-4">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <div class="card h-100 dashboard-card">
+                    <div class="card-body text-center">
+                        <div class="dashboard-icon bg-primary mx-auto">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <h4>Plan de Tratamiento</h4>
+                        <p class="text-muted">Progreso general</p>
+                        <div class="progress mb-3">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 75%"></div>
+                        </div>
+                        <p class="mb-0"><strong>75%</strong> completado</p>
+                        <a href="tratamientos.html" class="btn btn-outline-primary mt-3">Ver detalles</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4 mb-md-0">
+                <div class="card h-100 dashboard-card">
+                    <div class="card-body text-center">
+                        <div class="dashboard-icon bg-info mx-auto">
+                            <i class="fas fa-pills"></i>
+                        </div>
+                        <h4>Medicación</h4>
+                        <p class="text-muted">Estado actual</p>
+                        <ul class="list-group list-group-flush text-start">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Fluoxetina 20mg
+                                <span class="badge bg-success rounded-pill">Activo</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Clonazepam 0.5mg
+                                <span class="badge bg-warning text-dark rounded-pill">Revisión pendiente</span>
+                            </li>
+                        </ul>
+                        <a href="historial_med.html" class="btn btn-outline-info mt-3">Ver medicación</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 dashboard-card">
+                    <div class="card-body text-center">
+                        <div class="dashboard-icon bg-success mx-auto">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h4>Seguimiento</h4>
+                        <p class="text-muted">Última actualización: 3 abril</p>
+                        <div class="d-flex justify-content-around text-center">
+                            <div>
+                                <h3 class="text-success">7.5</h3>
+                                <small class="text-muted">Estado de ánimo</small>
+                            </div>
+                            <div>
+                                <h3 class="text-primary">6.2</h3>
+                                <small class="text-muted">Energía</small>
+                            </div>
+                            <div>
+                                <h3 class="text-info">8.1</h3>
+                                <small class="text-muted">Sueño</small>
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-outline-success mt-3">Registrar hoy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recursos y alertas -->
+        <div class="row">
+            <div class="col-lg-8 mb-4 mb-lg-0">
+                <h4 class="mb-3"><i class="fas fa-book-medical me-2"></i>Recursos recomendados</h4>
+                <div class="card dashboard-card">
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center p-3">
+                                <i class="fas fa-file-pdf text-danger me-3 fa-lg"></i>
+                                <div>
+                                    <h6 class="mb-1">Guía para el manejo de la ansiedad</h6>
+                                    <p class="text-muted mb-0 small">Recomendado por Dra. González - 05/04/2025</p>
+                                </div>
+                                <span class="badge bg-success ms-auto">Nuevo</span>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center p-3">
+                                <i class="fas fa-video text-primary me-3 fa-lg"></i>
+                                <div>
+                                    <h6 class="mb-1">Técnicas de respiración para momentos de estrés</h6>
+                                    <p class="text-muted mb-0 small">Parte de tu plan de tratamiento</p>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center p-3">
+                                <i class="fas fa-headphones text-info me-3 fa-lg"></i>
+                                <div>
+                                    <h6 class="mb-1">Meditación guiada para insomnio</h6>
+                                    <p class="text-muted mb-0 small">15 minutos - Recomendado por Lic. Méndez</p>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center p-3">
+                                <i class="fas fa-book text-warning me-3 fa-lg"></i>
+                                <div>
+                                    <h6 class="mb-1">Lecturas recomendadas: Autocompasión</h6>
+                                    <p class="text-muted mb-0 small">Lista de libros para el desarrollo personal</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="#" class="text-primary">Ver todos los recursos</a>
+                    </div>
+                </div>
+            </div>
+                <!-- Contacto de emergencia -->
+                <div class="card bg-light mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-phone-alt text-danger me-2"></i>Contacto de Emergencia</h5>
+                        <p class="mb-1"><strong>Línea de Atención 24/7:</strong></p>
+                        <p class="mb-0 fs-5">800-555-1234</p>
+                        <hr>
+                        <p class="mb-0 small text-muted">Si experimentas una crisis, no dudes en contactarnos inmediatamente.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5><i class="fas fa-brain me-2"></i>PsycheKinesis</h5>
+                    <p class="small">Cuidando tu bienestar mental cada día</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5>Enlaces rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white text-decoration-none">preguntas frecuentes</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Recursos</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <h5>Contacto</h5>
+                    <p class="mb-0 small"><i class="fas fa-envelope me-2"></i>soporte@psychekinesis.com</p>
+                    <p class="mb-0 small"><i class="fas fa-phone me-2"></i>Emergencias: 800-555-1234</p>
+                </div>
+            </div>
+            <hr class="my-3">
+            <div class="text-center">
+                <p class="small mb-0">© 2025 PsycheKinesis - Todos los derechos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Obtener nombre de usuario
+        document.addEventListener('DOMContentLoaded', function() {
+            const nombreUsuario = localStorage.getItem('nombreUsuario') || 'Ana López';
+            const nombreCorto = nombreUsuario.split(' ')[0] || 'Usuario';
+            
+            document.getElementById('nombreUsuario').textContent = nombreUsuario;
+            document.getElementById('nombreUsuarioBanner').textContent = nombreCorto;
+            
+            // Activar tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+        });
+        
+        // Función para cerrar sesión
+        function cerrarSesion() {
+            localStorage.removeItem("usuario");
+            sessionStorage.removeItem("usuario");
+            window.location.href = "../html/ingreso.html";
+        }
+    </script>
+</body>
+</html>

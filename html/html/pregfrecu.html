@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preguntas Frecuentes - PsycheKinesis</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optional custom CSS to maintain branding elements -->
+    <style>
+        .navbar, footer {
+            background-color: #00a8e8;
+        }
+        .accordion-button:not(.collapsed) {
+            background-color: rgba(0, 168, 232, 0.1);
+            color: #00a8e8;
+        }
+        .accordion-button:focus {
+            border-color: #00a8e8;
+            box-shadow: 0 0 0 0.25rem rgba(0, 168, 232, 0.25);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">Preguntas Frecuentes - PsycheKinesis</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="inicio.html">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="bienestar.html">Bienestar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="chatbot.html">ChatBot</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contactos.html">Contactos de Emergencia</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="nosotros.html">Sobre Nosotros</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="recursos.html">Recursos</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">Preguntas Frecuentes</h2>
+                        
+                        <div class="accordion" id="faqAccordion">
+                            <!-- Pregunta 1 -->
+                            <div class="accordion-item">
+                                <h3 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        ¿Qué debo hacer si estoy pasando por una crisis emocional?
+                                    </button>
+                                </h3>
+                                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        <p>Si estás pasando por una crisis emocional, es importante que busques apoyo lo antes posible. Puedes contactar con los números de emergencia disponibles en nuestra sección de <a href="contactos.html">Contactos de Emergencia</a>, o hablar con un profesional de salud mental para recibir el apoyo adecuado.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Pregunta 2 -->
+                            <div class="accordion-item">
+                                <h3 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        ¿Cómo puedo empezar a mejorar mi bienestar emocional?
+                                    </button>
+                                </h3>
+                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        <p>Una excelente manera de comenzar es implementando pequeños hábitos de autocuidado en tu vida diaria. Puedes comenzar con algunas de nuestras sugerencias en la sección de <a href="bienestar.html">Bienestar</a>, como ejercicios de relajación, meditación o actividades que fomenten la autoestima.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Pregunta 3 -->
+                            <div class="accordion-item">
+                                <h3 class="accordion-header" id="headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        ¿Puedo utilizar los recursos que ofrecen en PsycheKinesis de forma gratuita?
+                                    </button>
+                                </h3>
+                                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        <p>Sí, todos los recursos y herramientas que ofrecemos en PsycheKinesis son gratuitos. Creemos que el bienestar emocional debe ser accesible para todos, por lo que puedes utilizar nuestros artículos, videos y enlaces sin ningún costo.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Pregunta 4 -->
+                            <div class="accordion-item">
+                                <h3 class="accordion-header" id="headingFour">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                        ¿Dónde puedo encontrar ayuda profesional si lo necesito?
+                                    </button>
+                                </h3>
+                                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        <p>En nuestra sección de <a href="contactos.html">Contactos de Emergencia</a>, encontrarás números de teléfono y enlaces a servicios de apoyo profesional. Además, te recomendamos que te pongas en contacto con un psicólogo o terapeuta en tu área para una consulta personalizada.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Pregunta 5 -->
+                            <div class="accordion-item">
+                                <h3 class="accordion-header" id="headingFive">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                        ¿Cómo puedo contribuir o ayudar a otros a través de PsycheKinesis?
+                                    </button>
+                                </h3>
+                                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        <p>Si deseas contribuir o ayudar a otros, puedes compartir nuestros recursos y recomendaciones con personas que puedan beneficiarse. También puedes unirte a nuestra comunidad a través de los foros o actividades que estaremos organizando próximamente. Mantente atento a las actualizaciones en nuestra página.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Pregunta 6 -->
+                            <div class="accordion-item">
+                                <h3 class="accordion-header" id="headingSix">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                        ¿Cómo puedo ponerme en contacto con el equipo de PsycheKinesis?
+                                    </button>
+                                </h3>
+                                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        <p>Puedes ponerte en contacto con nosotros a través de la sección de <a href="contactos.html">Contactos de Emergencia</a>, donde proporcionamos nuestras vías de contacto directas, o por correo electrónico a nuestra dirección oficial. Estaremos encantados de responder a cualquier pregunta o inquietud que tengas.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="py-3 text-center text-white mt-5">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 PsycheKinesis. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
