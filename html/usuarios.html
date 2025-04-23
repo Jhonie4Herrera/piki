@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión | Usuarios, Pacientes y Profesionales</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script defer src="../js/api-client.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--secondary);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin: 2rem 0;
+            color: var(--secondary);
+        }
+        
+        .tab-container {
+            margin-bottom: 2rem;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+        
+        .tabs {
+            display: flex;
+            background-color: var(--light);
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab-btn {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray);
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .tab-btn:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--primary);
+        }
+        
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+            background-color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 2rem;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+        }
+        
+        .search-box input {
+            border: none;
+            outline: none;
+            padding: 0.25rem 0.5rem;
+            width: 200px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+        
+        thead {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tr:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        
+        .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-icon {
+            padding: 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .edit-icon {
+            color: var(--warning);
+        }
+        
+        .delete-icon {
+            color: var(--danger);
+        }
+        
+        .action-icon:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--primary);
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            gap: 0.5rem;
+        }
+        
+        .page-item {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .page-item:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        
+        .page-item.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .action-bar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .search-box input {
+                width: 100%;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-hospital-user"></i> ClinicSystem
+            </div>
+            <div class="user-info">
+                <i class="fas fa-user-circle"></i> Admin
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">Sistema de Gestión de Usuarios</h1>
+        
+        <div class="tab-container">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'usuarios')">
+                    <i class="fas fa-users"></i> Usuarios
+                </button>
+                <button class="tab-btn" onclick="openTab(event, 'pacientes')">
+                    <i class="fas fa-user-injured"></i> Pacientes
+                </button>
+                <button class="tab-btn" onclick="openTab(event, 'profesionales')">
+                    <i class="fas fa-user-md"></i> Profesionales
+                </button>
+            </div>
+            
+            <!-- Tab de Usuarios -->
+            <div id="usuarios" class="tab-content active">
+                <div class="action-bar">
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="getAllUsuarios()">
+                            <i class="fas fa-sync-alt"></i> Actualizar
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Nuevo Usuario
+                        </button>
+                    </div>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Buscar usuarios..." onkeyup="searchUsuarios(this.value)">
+                    </div>
+                </div>
+                
+                <div id="usuariosTableContainer">
+                    <table id="usuariosTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Email</th>
+                                <th>Nombre Completo</th>
+                                <th>Rol</th>
+                                <th>Género</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="6" class="loading">
+                                    <i class="fas fa-spinner fa-spin"></i> Cargando usuarios...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <div class="page-item"><i class="fas fa-chevron-left"></i></div>
+                        <div class="page-item active">1</div>
+                        <div class="page-item">2</div>
+                        <div class="page-item">3</div>
+                        <div class="page-item"><i class="fas fa-chevron-right"></i></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab de Pacientes -->
+            <div id="pacientes" class="tab-content">
+                <div class="action-bar">
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="getAllPacientes()">
+                            <i class="fas fa-sync-alt"></i> Actualizar
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Nuevo Paciente
+                        </button>
+                    </div>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Buscar pacientes..." onkeyup="searchPacientes(this.value)">
+                    </div>
+                </div>
+                
+                <div id="pacientesTableContainer">
+                    <table id="pacientesTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Edad</th>
+                                <th>Género</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="5" class="loading">
+                                    <i class="fas fa-spinner fa-spin"></i> Cargando pacientes...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <div class="page-item"><i class="fas fa-chevron-left"></i></div>
+                        <div class="page-item active">1</div>
+                        <div class="page-item">2</div>
+                        <div class="page-item">3</div>
+                        <div class="page-item"><i class="fas fa-chevron-right"></i></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab de Profesionales -->
+            <div id="profesionales" class="tab-content">
+                <div class="action-bar">
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="getAllProfesionales()">
+                            <i class="fas fa-sync-alt"></i> Actualizar
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Nuevo Profesional
+                        </button>
+                    </div>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Buscar profesionales..." onkeyup="searchProfesionales(this.value)">
+                    </div>
+                </div>
+                
+                <div id="profesionalesTableContainer">
+                    <table id="profesionalesTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Especialidad</th>
+                                <th>Teléfono</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="5" class="loading">
+                                    <i class="fas fa-spinner fa-spin"></i> Cargando profesionales...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <div class="page-item"><i class="fas fa-chevron-left"></i></div>
+                        <div class="page-item active">1</div>
+                        <div class="page-item">2</div>
+                        <div class="page-item">3</div>
+                        <div class="page-item"><i class="fas fa-chevron-right"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>© 2025 ClinicSystem - Sistema de Gestión Clínica</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Función para cambiar entre tabs
+        function openTab(event, tabName) {
+            const tabContents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove("active");
+            }
+            
+            const tabButtons = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove("active");
+            }
+            
+            document.getElementById(tabName).classList.add("active");
+            event.currentTarget.classList.add("active");
+            
+            // Cargar datos correspondientes al tab
+            if (tabName === "usuarios") {
+                getAllUsuarios();
+            } else if (tabName === "pacientes") {
+                getAllPacientes();
+            } else if (tabName === "profesionales") {
+                getAllProfesionales();
+            }
+        }
+        
+        // Función para mostrar los datos en las tablas
+        function displayData(data, tableId, columns) {
+            const tableBody = document.querySelector(`#${tableId} tbody`);
+            tableBody.innerHTML = "";
+            
+            if (data.length === 0) {
+                const row = document.createElement("tr");
+                const cell = document.createElement("td");
+                cell.colSpan = columns.length + 1;
+                cell.classList.add("empty-state");
+                cell.innerHTML = `<i class="fas fa-info-circle"></i> No se encontraron registros`;
+                row.appendChild(cell);
+                tableBody.appendChild(row);
+                return;
+            }
+            
+            data.forEach(item => {
+                const row = document.createElement("tr");
+                
+                columns.forEach(column => {
+                    const cell = document.createElement("td");
+                    cell.textContent = item[column] || "";
+                    row.appendChild(cell);
+                });
+                
+                // Agregar columna de acciones
+                const actionsCell = document.createElement("td");
+                actionsCell.classList.add("table-actions");
+                actionsCell.innerHTML = `
+                    <span class="action-icon edit-icon" title="Editar"><i class="fas fa-edit"></i></span>
+                    <span class="action-icon delete-icon" title="Eliminar"><i class="fas fa-trash-alt"></i></span>
+                `;
+                row.appendChild(actionsCell);
+                
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Funciones para buscar en las tablas
+        function searchUsuarios(query) {
+            // Implementar búsqueda de usuarios
+            console.log("Buscando usuarios:", query);
+        }
+        
+        function searchPacientes(query) {
+            // Implementar búsqueda de pacientes
+            console.log("Buscando pacientes:", query);
+        }
+        
+        function searchProfesionales(query) {
+            // Implementar búsqueda de profesionales
+            console.log("Buscando profesionales:", query);
+        }
+        
+        // Implementar las funciones existentes
+        async function getAllUsuarios() {
+            try {
+                document.querySelector("#usuariosTable tbody").innerHTML = `
+                    <tr>
+                        <td colspan="6" class="loading">
+                            <i class="fas fa-spinner fa-spin"></i> Cargando usuarios...
+                        </td>
+                    </tr>
+                `;
+                
+                // Aquí iría la llamada a la API con axios
+                // const response = await axios.get('/api/usuarios');
+                // const data = response.data;
+                
+                // Por ahora usamos datos de ejemplo
+                setTimeout(() => {
+                    const data = [
+                        { id: 1, email: "admin@example.com", nombreCompleto: "Administrador", rol: "Admin", genero: "Masculino" },
+                        { id: 2, email: "doctor@example.com", nombreCompleto: "Juan Pérez", rol: "Profesional", genero: "Masculino" },
+                        { id: 3, email: "paciente@example.com", nombreCompleto: "María López", rol: "Paciente", genero: "Femenino" }
+                    ];
+                    
+                    displayData(data, "usuariosTable", ["id", "email", "nombreCompleto", "rol", "genero"]);
+                }, 800);
+            } catch (error) {
+                console.error("Error al cargar usuarios:", error);
+            }
+        }
+        
+        async function getAllPacientes() {
+            try {
+                document.querySelector("#pacientesTable tbody").innerHTML = `
+                    <tr>
+                        <td colspan="5" class="loading">
+                            <i class="fas fa-spinner fa-spin"></i> Cargando pacientes...
+                        </td>
+                    </tr>
+                `;
+                
+                // Aquí iría la llamada a la API con axios
+                // const response = await axios.get('/api/pacientes');
+                // const data = response.data;
+                
+                // Por ahora usamos datos de ejemplo
+                setTimeout(() => {
+                    const data = [
+                        { id: 1, nombre: "María López", edad: 35, genero: "Femenino" },
+                        { id: 2, nombre: "Roberto García", edad: 42, genero: "Masculino" },
+                        { id: 3, nombre: "Ana Martínez", edad: 28, genero: "Femenino" }
+                    ];
+                    
+                    displayData(data, "pacientesTable", ["id", "nombre", "edad", "genero"]);
+                }, 800);
+            } catch (error) {
+                console.error("Error al cargar pacientes:", error);
+            }
+        }
+        
+        async function getAllProfesionales() {
+            try {
+                document.querySelector("#profesionalesTable tbody").innerHTML = `
+                    <tr>
+                        <td colspan="5" class="loading">
+                            <i class="fas fa-spinner fa-spin"></i> Cargando profesionales...
+                        </td>
+                    </tr>
+                `;
+                
+                // Aquí iría la llamada a la API con axios
+                // const response = await axios.get('/api/profesionales');
+                // const data = response.data;
+                
+                // Por ahora usamos datos de ejemplo
+                setTimeout(() => {
+                    const data = [
+                        { id: 1, nombre: "Dr. Juan Pérez", especialidad: "Cardiología", telefono: "555-1234" },
+                        { id: 2, nombre: "Dra. Laura Rodríguez", especialidad: "Pediatría", telefono: "555-5678" },
+                        { id: 3, nombre: "Dr. Carlos Gómez", especialidad: "Traumatología", telefono: "555-9012" }
+                    ];
+                    
+                    displayData(data, "profesionalesTable", ["id", "nombre", "especialidad", "telefono"]);
+                }, 800);
+            } catch (error) {
+                console.error("Error al cargar profesionales:", error);
+            }
+        }
+        
+        // Cargar usuarios al iniciar la página
+        document.addEventListener("DOMContentLoaded", () => {
+            getAllUsuarios();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación Emocional - PsycheKinesis</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom styles -->
+    <style>
+        :root {
+            --primary-color: #00a8e8;
+            --primary-color-dark: #007bb5;
+            --secondary-color: #6610f2;
+            --accent-color: #f76c6c;
+            --success-color: #28a745;
+        }
+        
+        .navbar, .footer {
+            background-color: var(--primary-color);
+        }
+        
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        .welcome-section {
+            margin-bottom: 100px; /* Space for fixed footer */
+        }
+        
+        .mood-container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .mood-option {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            background-color: #f8f9fa;
+            border: 2px solid transparent;
+        }
+        
+        .mood-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        
+        .mood-option.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(0, 168, 232, 0.1);
+        }
+        
+        .mood-emoji {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .mood-slider-container {
+            margin: 30px 0;
+        }
+        
+        .mood-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 10px;
+            background: linear-gradient(to right, #f76c6c, #ffce56, #66bb6a);
+            outline: none;
+        }
+        
+        .mood-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .mood-slider::-moz-range-thumb {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .mood-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        
+        .scale-values {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+        }
+        
+        .question-card {
+            display: none;
+        }
+        
+        .question-card.active {
+            display: block;
+        }
+        
+        .result-container {
+            display: none;
+            text-align: center;
+        }
+        
+        .result-emoji {
+            font-size: 5rem;
+            margin: 20px 0;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-color-dark);
+            border-color: var(--primary-color-dark);
+        }
+        
+        .progress {
+            height: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .answer-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .answer-btn {
+            text-align: left;
+            padding: 15px;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+        
+        .answer-btn:hover {
+            transform: translateX(5px);
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">PsycheKinesis</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container py-5 welcome-section">
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-10 text-center">
+                <h1 class="text-primary mb-4">¿Cómo te sientes hoy?</h1>
+                <p class="lead mb-5">
+                    Tómate un momento para reflexionar sobre tu estado emocional actual. 
+                    Esta evaluación te ayudará a entender mejor cómo te sientes y qué recursos podrían beneficiarte.
+                </p>
+            </div>
+        </div>
+        
+        <div class="mood-container">
+            <!-- Evaluación inicial simple -->
+            <div id="initialAssessment">
+                <h3 class="text-center mb-4">Selecciona cómo te sientes en este momento:</h3>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="mood-option" data-mood="muy-bien" onclick="selectMood(this)">
+                            <div class="text-center">
+                                <div class="mood-emoji">😊</div>
+                                <h4>Muy bien</h4>
+                                <p>Me siento positivo/a y con energía</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <div class="mood-option" data-mood="bien" onclick="selectMood(this)">
+                            <div class="text-center">
+                                <div class="mood-emoji">🙂</div>
+                                <h4>Bien</h4>
+                                <p>Me siento bastante bien</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <div class="mood-option" data-mood="regular" onclick="selectMood(this)">
+                            <div class="text-center">
+                                <div class="mood-emoji">😐</div>
+                                <h4>Regular</h4>
+                                <p>Ni bien ni mal, neutral</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <div class="mood-option" data-mood="mal" onclick="selectMood(this)">
+                            <div class="text-center">
+                                <div class="mood-emoji">😔</div>
+                                <h4>Mal</h4>
+                                <p>Me siento triste o preocupado/a</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12">
+                        <div class="mood-option" data-mood="muy-mal" onclick="selectMood(this)">
+                            <div class="text-center">
+                                <div class="mood-emoji">😢</div>
+                                <h4>Muy mal</h4>
+                                <p>Me siento muy triste, ansioso/a o sin esperanza</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Escala de intensidad -->
+                <div class="mood-slider-container">
+                    <h4 class="mb-3">Intensidad de lo que sientes:</h4>
+                    <input type="range" min="1" max="10" value="5" class="mood-slider" id="moodIntensity">
+                    <div class="mood-labels">
+                        <span>Leve</span>
+                        <span>Moderada</span>
+                        <span>Intensa</span>
+                    </div>
+                    <div class="scale-values">
+                        <span>1</span>
+                        <span>5</span>
+                        <span>10</span>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <button class="btn btn-primary btn-lg" onclick="startDetailedAssessment()">Continuar</button>
+                </div>
+            </div>
+            
+            <!-- Evaluación detallada con preguntas -->
+            <div id="detailedAssessment" style="display: none;">
+                <div class="progress">
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 0%"></div>
+                </div>
+                
+                <!-- Preguntas (solo se muestra una a la vez) -->
+                <div class="question-card active" id="question1">
+                    <h4>1. Durante las últimas dos semanas, ¿con qué frecuencia has tenido poco interés o placer en hacer las cosas?</h4>
+                    <div class="answer-options mt-4">
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(0)">Nunca</button>
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(1)">Algunos días</button>
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(2)">Más de la mitad de los días</button>
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(3)">Casi todos los días</button>
+                    </div>
+                </div>
+                
+                <div class="question-card" id="question2">
+                    <h4>2. ¿Con qué frecuencia te has sentido decaído/a, deprimido/a o sin esperanza?</h4>
+                    <div class="answer-options mt-4">
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(0)">Nunca</button>
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(1)">Algunos días</button>
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(2)">Más de la mitad de los días</button>
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(3)">Casi todos los días</button>
+                    </div>
+                </div>
+                
+                <div class="question-card" id="question3">
+                    <h4>3. ¿Has tenido dificultad para concentrarte o mantener la atención en actividades como leer o ver televisión?</h4>
+                    <div class="answer-options mt-4">
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(0)">Nunca</button>
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(1)">Algunos días</button>
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(2)">Más de la mitad de los días</button>
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(3)">Casi todos los días</button>
+                    </div>
+                </div>
+                
+                <div class="question-card" id="question4">
+                    <h4>4. ¿Te has sentido nervioso/a, ansioso/a o con los nervios de punta?</h4>
+                    <div class="answer-options mt-4">
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(0)">Nunca</button>
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(1)">Algunos días</button>
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(2)">Más de la mitad de los días</button>
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(3)">Casi todos los días</button>
+                    </div>
+                </div>
+                
+                <div class="question-card" id="question5">
+                    <h4>5. ¿Has notado cambios en tus patrones de sueño (demasiado sueño o dificultad para dormir)?</h4>
+                    <div class="answer-options mt-4">
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(0)">No, mi sueño es normal</button>
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(1)">Ligeros cambios ocasionales</button>
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(2)">Cambios frecuentes</button>
+                        <button class="btn btn-outline-primary answer-btn" onclick="nextQuestion(3)">Problemas de sueño significativos</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Resultados -->
+            <div id="resultContainer" class="result-container">
+                <div class="result-emoji" id="resultEmoji">😊</div>
+                <h3 id="resultTitle">Tu bienestar emocional</h3>
+                <p id="resultDescription" class="mb-4">Según tus respuestas, parece que te encuentras en un buen estado emocional. Continúa con las actividades que te hacen sentir bien.</p>
+                
+                <div class="recommendations p-4 bg-light rounded mb-4">
+                    <h4 class="mb-3">Recomendaciones personalizadas:</h4>
+                    <div id="recommendationsList">
+                        <!-- Se rellena con JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="juegos/mini-juegos.html" class="btn btn-primary">Explorar Mini-Juegos</a>
+                    <a href="recursos.html" class="btn btn-outline-primary">Ver Recursos</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer py-3 text-center text-white">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 PsycheKinesis. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <script>
+        let selectedMood = null;
+        let currentQuestion = 1;
+        let totalQuestions = 5;
+        let totalScore = 0;
+    
+        // Función para seleccionar el estado de ánimo
+        function selectMood(element) {
+            document.querySelectorAll('.mood-option').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedMood = element.getAttribute('data-mood');
+            document.querySelector('#initialAssessment button').disabled = false;
+        }
+    
+        // Función para iniciar la evaluación detallada
+        function startDetailedAssessment() {
+            if (!selectedMood) {
+                alert("Por favor, selecciona cómo te sientes antes de continuar.");
+                return;
+            }
+            document.getElementById('initialAssessment').style.display = 'none';
+            document.getElementById('detailedAssessment').style.display = 'block';
+        }
+    
+        // Función para avanzar a la siguiente pregunta
+        function nextQuestion(score) {
+            totalScore += score;
+    
+            // Actualizar barra de progreso
+            let progress = (currentQuestion / totalQuestions) * 100;
+            document.querySelector('.progress-bar').style.width = `${progress}%`;
+    
+            // Ocultar pregunta actual
+            document.getElementById(`question${currentQuestion}`).classList.remove('active');
+            currentQuestion++;
+    
+            if (currentQuestion > totalQuestions) {
+                showResults();
+            } else {
+                // Mostrar siguiente pregunta
+                document.getElementById(`question${currentQuestion}`).classList.add('active');
+            }
+        }
+    
+        // Función para mostrar los resultados finales
+        function showResults() {
+            document.getElementById('detailedAssessment').style.display = 'none';
+            document.getElementById('resultContainer').style.display = 'block';
+    
+            let resultEmoji = document.getElementById('resultEmoji');
+            let resultTitle = document.getElementById('resultTitle');
+            let resultDescription = document.getElementById('resultDescription');
+            let recommendationsList = document.getElementById('recommendationsList');
+    
+            recommendationsList.innerHTML = ''; // Limpiar recomendaciones previas
+    
+            if (totalScore <= 3) {
+                resultEmoji.innerText = '😊';
+                resultTitle.innerText = 'Tu bienestar emocional es óptimo';
+                resultDescription.innerText = 'Parece que te sientes bien en general. Sigue disfrutando de tus actividades y cuidando tu bienestar.';
+                recommendationsList.innerHTML = '<li>Continúa con actividades que disfrutes.</li><li>Comparte momentos con amigos y familia.</li>';
+            } else if (totalScore <= 8) {
+                resultEmoji.innerText = '🙂';
+                resultTitle.innerText = 'Tu bienestar es estable';
+                resultDescription.innerText = 'Algunos días pueden ser difíciles, pero en general te mantienes en equilibrio. Es importante seguir cuidándote.';
+                recommendationsList.innerHTML = '<li>Practica técnicas de relajación o meditación.</li><li>Realiza ejercicio regularmente.</li>';
+            } else if (totalScore <= 12) {
+                resultEmoji.innerText = '😐';
+                resultTitle.innerText = 'Tu bienestar es variable';
+                resultDescription.innerText = 'Parece que experimentas altibajos emocionales. Tal vez necesites estrategias para gestionar mejor el estrés.';
+                recommendationsList.innerHTML = '<li>Habla con alguien de confianza sobre tus emociones.</li>.<li>puedes halar con nuestro chatbot y ver que sientes</li>.<li>Considera establecer rutinas saludables.</li>';
+            } else if (totalScore <= 15) {
+                resultEmoji.innerText = '😔';
+                resultTitle.innerText = 'Podrías necesitar apoyo';
+                resultDescription.innerText = 'Tus respuestas sugieren que podrías beneficiarte de apoyo emocional. Considera hablar con un profesional.';
+                recommendationsList.innerHTML = '<li>Explora actividades que mejoren tu bienestar.</li><li>Contacta con un profesional de salud mental.</li>';
+            } else {
+                resultEmoji.innerText = '😢';
+                resultTitle.innerText = 'Es importante buscar ayuda';
+                resultDescription.innerText = 'Tu bienestar emocional podría estar comprometido. No estás solo/a, buscar apoyo puede marcar una gran diferencia.';
+                recommendationsList.innerHTML = '<li>No dudes en buscar apoyo profesional.</li><li>Habla con nuestro chatbot para ver como te sientes, y si esta muy mal te pasamos co un profesional</li>';
+            }
+        }
+    </script>    

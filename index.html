@@ -1,259 +1,307 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenido - PsycheKinesis</title>
+    <meta name="description" content="PsycheKinesis: Plataforma para el bienestar emocional con recursos, consejos y apoyo en salud mental.">
+    <title>PsycheKinesis: Bienestar y Apoyo</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome para iconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Custom styles that override Bootstrap -->
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom styles -->
     <style>
         :root {
             --primary-color: #00a8e8;
             --primary-color-dark: #007bb5;
-            --secondary-color: #6610f2;
-            --accent-color: #f76c6c;
-            --success-color: #28a745;
+            --primary-color-light: #e6f2fa; /* Definida para hero-section y cta-box */
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-bottom: 70px;
         }
         
         .navbar, .footer {
             background-color: var(--primary-color);
         }
         
+        .navbar-brand {
+            font-weight: 700;
+        }
+        
         .btn-primary {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
+            transition: all 0.3s ease;
         }
         
         .btn-primary:hover {
             background-color: var(--primary-color-dark);
             border-color: var(--primary-color-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         
-        .btn-accent {
-            background-color: var(--accent-color);
-            border-color: var(--accent-color);
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
             color: white;
         }
         
-        .btn-accent:hover {
-            background-color: #e45858;
-            border-color: #e45858;
-            color: white;
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-card {
+            border-left: 4px solid var(--primary-color);
+            background-color: white;
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+        
+        .hero-section {
+            background-color: var(--primary-color-light);
+            padding: 3rem 0;
+            margin-bottom: 3rem;
         }
         
         .footer {
             position: fixed;
             bottom: 0;
             width: 100%;
+            padding: 1rem 0;
         }
         
-        .welcome-title {
+        .list-group-item {
+            padding: 1rem 1.25rem;
+            border-left: 0;
+            border-right: 0;
+        }
+        
+        .list-group-item i {
             color: var(--primary-color);
+            margin-right: 10px;
         }
         
-        .feature-icon {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 15px;
+        .btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 5px;
         }
         
-        .feature-card {
-            transition: transform 0.3s ease;
-            cursor: pointer;
+        .cta-box {
+            background-color: var(--primary-color-light);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 2rem;
         }
         
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1.5rem;
         }
         
-        .welcome-section {
-            margin-bottom: 100px; /* Space for fixed footer */
-        }
-        
-        .games-section {
+        .quote-card {
             background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 40px;
-        }
-        
-        .game-card {
-            border-radius: 10px;
-            overflow: hidden;
-            border: none;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .game-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-        }
-        
-        .game-image {
-            height: 160px;
-            object-fit: cover;
-        }
-        
-        .pulse-btn {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-            }
+            border-left: 4px solid var(--primary-color);
         }
     </style>
-    <script src="js/main.js" defer></script>
 </head>
+
 <body class="bg-light">
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container">
-                <a class="navbar-brand">PsycheKinesis</a>
+                <a class="navbar-brand" >PsycheKinesis</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        
-                       
-                    </ul>
-                </div>
             </div>
         </nav>
     </header>
 
-    <div class="container py-5 welcome-section">
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-10 text-center">
-                <h1 class="welcome-title display-4 mb-4">Bienvenido a PsycheKinesis</h1>
-                <p class="lead mb-5">
-                    Un espacio dedicado a tu bienestar mental donde encontrarás herramientas, 
-                    recursos y apoyo para cuidar lo más importante: tu salud emocional. 
-                    Tu viaje hacia una mente más saludable comienza aquí.
-                </p>
-                <div class="d-flex justify-content-center gap-3">
-                    <a href="html/ingreso.html" class="btn btn-primary btn-lg">Iniciar sección </a>
-                    <a href="evaluacion-emocional.html" class="btn btn-accent btn-lg pulse-btn">
-                        <i class="fas fa-heart-pulse me-2"></i>¿Cómo te sientes hoy?
-                    </a>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h1 class="display-5 fw-bold mb-3">Tu bienestar emocional es nuestra prioridad</h1>
+                    <p class="lead mb-4">Encuentra recursos, apoyo y herramientas para navegar por los desafíos emocionales y alcanzar un equilibrio en tu vida.</p>
                 </div>
             </div>
         </div>
-        
-        <div class="row mt-5 g-4">
-            <div class="col-md-3">
-                <div class="card shadow h-100 feature-card" onclick="window.location.href='recursos.html'">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon">🧠</div>
-                        <h3 class="h5 card-title">Recursos Educativos</h3>
-                        <p class="card-text">Artículos, guías y material informativo sobre salud mental.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-3">
-                <div class="card shadow h-100 feature-card" onclick="window.location.href='comunidad.html'">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon">👥</div>
-                        <h3 class="h5 card-title">Comunidad</h3>
-                        <p class="card-text">Conecta con personas que comparten experiencias similares.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-3">
-                <div class="card shadow h-100 feature-card" onclick="window.location.href='auto-evaluacion.html'">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon">📝</div>
-                        <h3 class="h5 card-title">Autoevaluaciones</h3>
-                        <p class="card-text">Herramientas para entender mejor tu estado emocional actual.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-3">
-                <div class="card shadow h-100 feature-card">
-                    <a href="lista_prof.html">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon">👨‍⚕️</div>
-                            <h3 class="h5 card-title">Profesionales</h3>
-                            <p class="card-text">Acceso a psicólogos y especialistas en salud mental.</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Nueva sección de mini-juegos -->
-        <div class="games-section mt-5">
-            <h2 class="text-center mb-4">Mini-Juegos para tu Bienestar</h2>
-            <p class="text-center mb-4">Juegos interactivos diseñados para reducir el estrés y mejorar tu estado de ánimo</p>
-            
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card game-card">
-                        <img src="imagenes/Imagen1.jpg" class="card-img-top game-image" alt="Juego de respiración">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Respiración Guiada</h5>
-                            <p class="card-text">Aprende a controlar tu respiración para reducir la ansiedad.</p>
-                            <a href="juegos/juegos/respiracion.html" class="btn btn-primary">Jugar Ahora</a>
-                        </div>
-                    </div>
-                </div>
-            
-                    <div class="col-md-4">
-                        <div class="card game-card">
-                            <img src="imagenes/Imagen2.jpg" class="card-img-top game-image" alt="Juego memoria">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">Juego memoria</h5>
-                                <p class="card-text">Ejercita tu mente y mejora tu concentración con este divertido juego.</p>
-                                <a href="juegos/juegos/memoria.html" class="btn btn-primary">Jugar Ahora</a>
-                            </div>
-                        </div>
-                    </div>
+    </section>
+
+    <div class="container py-5">
+        <!-- Main Content -->
+        <div class="row mb-5">
+            <div class="col-lg-8">
+                <h2 class="section-title">Bienvenido a PsycheKinesis</h2>
+                <p class="lead">Un espacio dedicado al bienestar mental y emocional, donde encontrarás recursos y apoyo para tu día a día.</p>
+                <p>Nuestra misión es proporcionarte recursos accesibles, comprensibles y prácticos que puedas aplicar en tu vida cotidiana para mejorar tu salud mental y encontrar equilibrio emocional.</p>
                 
-                    <div class="col-md-4">
-                        <div class="card game-card">
-                            <img src="imagenes/Imagen3.jpg" class="card-img-top game-image" alt="Jardin zen">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">Juego memoria</h5>
-                                <p class="card-text">Ejercita tu mente y mejora tu concentración con este divertido juego.</p>
-                                <a href="juegos/juegos/jardinzen.html" class="btn btn-primary">Jugar Ahora</a>
-                            </div>
-                        </div>
+                <div class="card shadow quote-card">
+                    <div class="card-body">
+                        <h3 class="h5 mb-3">Frase del día</h3>
+                        <figure>
+                            <blockquote class="blockquote">
+                                <p>"Las emociones pasan por ti, pero no dejan de ser tú."</p>
+                            </blockquote>
+                            <figcaption class="blockquote-footer">
+                                Thich Nhat Hanh
+                            </figcaption>
+                        </figure>
                     </div>
-            </div>
-            
-            <div class="text-center mt-4">
-                <a href="juegos/mini-juegos.html" class="btn btn-outline-primary">Ver todos los juegos</a>
+                </div>
             </div>
         </div>
         
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-6 text-center">
-                <p>¿No tienes una cuenta con nosotros?</p>
-                <a href="html/login.html" class="btn btn-outline-primary">Registrate</a>
+        <!-- Features Section -->
+        <h2 class="section-title mb-4">¿Qué ofrecemos?</h2>
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card feature-card h-100 shadow">
+                    <div class="card-body p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-heart-pulse"></i>
+                        </div>
+                        <h3 class="h5 mb-3">Consejos prácticos</h3>
+                        <p class="card-text">Herramientas y estrategias basadas en evidencia para mantener y mejorar tu bienestar emocional en el día a día.</p>
+                    </div>
+                </div>
             </div>
+            
+            <div class="col-md-4">
+                <div class="card feature-card h-100 shadow">
+                    <div class="card-body p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-hand-holding-heart"></i>
+                        </div>
+                        <h3 class="h5 mb-3">Recursos y aplicaciones</h3>
+                        <p class="card-text">Recopilación de los mejores recursos digitales, libros, podcasts y aplicaciones para tu bienestar mental.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card feature-card h-100 shadow">
+                    <div class="card-body p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-phone-volume"></i>
+                        </div>
+                        <h3 class="h5 mb-3">Información en crisis</h3>
+                        <p class="card-text">Contactos de emergencia, líneas de ayuda y servicios disponibles las 24 horas para momentos difíciles.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Testimonials -->
+        <h2 class="section-title mb-4">Testimonios</h2>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card shadow h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex mb-3">
+                            <div class="me-3">
+                                <img src="images/user1.jpg" alt="Foto de María C." class="rounded-circle" width="60" height="60">
+                            </div>
+                            <div>
+                                <h3 class="h5 mb-1">María C.</h3>
+                                <div class="text-warning mb-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="card-text">"Los recursos de meditación me han ayudado enormemente a controlar mi ansiedad. Ahora puedo manejar mejor los momentos de estrés y sentirme más en paz conmigo misma."</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card shadow h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex mb-3">
+                            <div class="me-3">
+                                <img src="images/user2.jpg" alt="Foto de David P." class="rounded-circle" width="60" height="60">
+                            </div>
+                            <div>
+                                <h3 class="h5 mb-1">David P.</h3>
+                                <div class="text-warning mb-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="card-text">"El chatbot me ayudó en un momento de crisis cuando necesitaba hablar con alguien. Me proporcionó consejos prácticos y me dirigió a los recursos adecuados cuando más lo necesitaba."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="cta-box text-center">
+            <h2 class="section-title">Únete a PsycheKinesis</h2>
+            <div class="mb-3">
+                <a href="html/ingreso.html" class="btn btn-primary btn-lg">Iniciar Sesión</a>
+            </div>
+            <p>¿No tienes una cuenta con nosotros?</p>
+            <a href="html/login.html" class="btn btn-outline-primary">Regístrate</a>
         </div>
     </div>
 
     <footer class="footer py-3 text-center text-white">
         <div class="container">
-            <p class="mb-0">&copy; 2025 PsycheKinesis. Todos los derechos reservados.</p>
+            <div class="row align-items-center">
+                <div class="col-md-4 text-md-start">
+                    <a href="#" class="text-white text-decoration-none">
+                        <i class="fas fa-brain me-2"></i>PsycheKinesis
+                    </a>
+                </div>
+                <div class="col-md-4 my-3 my-md-0">
+                    <p class="mb-0">© 2025 PsycheKinesis. Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="d-flex justify-content-center justify-content-md-end">
+                        <a href="#" class="text-white mx-2">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-white mx-2">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-white mx-2">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-white mx-2">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
 

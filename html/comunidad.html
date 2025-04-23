@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunidad - PsycheKinesis</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #00a8e8;
+            --secondary-color: #4a5568;
+            --light-color: #f8f9fa;
+            --dark-color: #2d3748;
+            --border-radius: 0.5rem;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f9fc;
+        }
+        
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .post-card {
+            margin-bottom: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .post-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .profile-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+        }
+
+        .comment-card {
+            margin-left: 2.5rem;
+            margin-top: 1rem;
+            border-left: 3px solid var(--primary-color);
+            padding: 0.75rem 1rem;
+            background-color: rgba(84, 105, 212, 0.05);
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #4559c4;
+            border-color: #4559c4;
+        }
+        
+        .sidebar {
+            position: sticky;
+            top: 20px;
+        }
+        
+        .sidebar-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .footer {
+            background-color: var(--dark-color);
+            margin-top: 3rem;
+        }
+        
+        .tag {
+            display: inline-block;
+            background-color: rgba(84, 105, 212, 0.1);
+            color: var(--primary-color);
+            padding: 0.2rem 0.5rem;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .post-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .action-btn:hover {
+            color: var(--primary-color);
+        }
+        
+        .user-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card-title {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .nav-tabs .nav-link.active {
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1>Comunidad PsycheKinesis</h1>
+                    <p class="mb-0">Conecta, comparte y crece con otros miembros de nuestra comunidad</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <button class="btn btn-light"><i class="fas fa-plus me-1"></i> Nueva Publicación</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="row">
+            <!-- Contenido Principal -->
+            <div class="col-lg-8">
+                <!-- Filtros y Pestañas -->
+                <div class="card mb-4">
+                    <div class="card-body p-0">
+                        <ul class="nav nav-tabs border-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#"><i class="fas fa-fire-alt me-1"></i> Destacados</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><i class="fas fa-clock me-1"></i> Recientes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><i class="fas fa-comments me-1"></i> Más Comentados</a>
+                            </li>
+                            <li class="nav-item ms-auto">
+                                <a class="nav-link" href="#"><i class="fas fa-filter me-1"></i> Filtrar</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Publicación Destacada -->
+                <div class="card post-card mb-4">
+                    <div class="card-header bg-primary bg-opacity-10 d-flex align-items-center">
+                        <i class="fas fa-thumbtack text-primary me-2"></i>
+                        <span class="fw-bold">Publicación Destacada</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <img src="/api/placeholder/48/48" class="profile-img me-3" alt="Administrador">
+                            <div>
+                                <h6 class="mb-0 fw-bold">Administrador</h6>
+                                <p class="small text-muted mb-0">1 de abril de 2025</p>
+                            </div>
+                        </div>
+                        
+                        <h5 class="card-title">¡Bienvenidos a nuestra comunidad!</h5>
+                        <p class="card-text">Aquí puedes compartir tus pensamientos y experiencias, y conectarte con otros miembros de la comunidad para apoyarse mutuamente en su proceso de desarrollo personal.</p>
+                        <p>Te invitamos a participar activamente, respetando siempre las normas de convivencia y aprovechando todos los recursos que ofrecemos.</p>
+                        
+                        <div class="mt-3">
+                            <span class="tag"><i class="fas fa-bookmark me-1"></i> Anuncio</span>
+                            <span class="tag"><i class="fas fa-info-circle me-1"></i> Importante</span>
+                        </div>
+                        
+                        <div class="post-actions">
+                            <div class="action-btn">
+                                <i class="far fa-heart"></i>
+                                <span>45 Me gusta</span>
+                            </div>
+                            <div class="action-btn">
+                                <i class="far fa-comment"></i>
+                                <span>12 Comentarios</span>
+                            </div>
+                            <div class="action-btn">
+                                <i class="far fa-bookmark"></i>
+                                <span>Guardar</span>
+                            </div>
+                            <div class="action-btn ms-auto">
+                                <i class="fas fa-share-alt"></i>
+                                <span>Compartir</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Publicación Regular -->
+                <div class="card post-card">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <img src="/api/placeholder/48/48" class="profile-img me-3" alt="Usuario123">
+                            <div>
+                                <h6 class="mb-0 fw-bold">Usuario123</h6>
+                                <p class="small text-muted mb-0">2 de abril de 2025</p>
+                            </div>
+                        </div>
+                        
+                        <h5 class="card-title">Artículo sobre autoconocimiento</h5>
+                        <p class="mt-3">¡Hola comunidad! Quiero compartir un artículo que me ayudó mucho en mi proceso de autoayuda y meditación. Me dio herramientas prácticas que estoy aplicando diariamente. ¡Espero que les sirva tanto como a mí!</p>
+                        
+                        <div class="my-3 p-3 bg-light rounded">
+                            <h6><i class="fas fa-link me-1"></i> Enlace compartido</h6>
+                            <p class="mb-0 small">www.psicologia-practica.com/autoconocimiento-y-desarrollo</p>
+                        </div>
+                        
+                        <div class="mt-2 mb-3">
+                            <span class="tag"><i class="fas fa-book me-1"></i> Recursos</span>
+                            <span class="tag"><i class="fas fa-brain me-1"></i> Meditación</span>
+                            <span class="tag"><i class="fas fa-lightbulb me-1"></i> Desarrollo</span>
+                        </div>
+
+                        <div class="post-actions">
+                            <div class="action-btn">
+                                <i class="far fa-heart"></i>
+                                <span>28 Me gusta</span>
+                            </div>
+                            <div class="action-btn">
+                                <i class="far fa-comment"></i>
+                                <span>2 Comentarios</span>
+                            </div>
+                            <div class="action-btn">
+                                <i class="far fa-bookmark"></i>
+                                <span>Guardar</span>
+                            </div>
+                            <div class="action-btn ms-auto">
+                                <i class="fas fa-share-alt"></i>
+                                <span>Compartir</span>
+                            </div>
+                        </div>
+
+                        <!-- Comentarios -->
+                        <div class="mt-4">
+                            <h6 class="mb-3"><i class="fas fa-comments me-2"></i>Comentarios</h6>
+                            
+                            <div class="comment-card">
+                                <div class="d-flex">
+                                    <img src="/api/placeholder/40/40" class="profile-img me-2" alt="Usuario456">
+                                    <div>
+                                        <div class="d-flex align-items-center">
+                                            <span class="comment-author">Usuario456</span>
+                                            <small class="text-muted ms-2">• hace 5 horas</small>
+                                        </div>
+                                        <p class="mb-1">¡Gracias por compartirlo! Lo he leído y me ha dado muchos consejos valiosos que comenzaré a aplicar desde hoy.</p>
+                                        <div class="d-flex gap-3">
+                                            <small class="text-muted"><i class="far fa-heart me-1"></i> 5</small>
+                                            <small class="text-muted"><i class="far fa-reply me-1"></i> Responder</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="comment-card">
+                                <div class="d-flex">
+                                    <img src="/api/placeholder/40/40" class="profile-img me-2" alt="Usuario789">
+                                    <div>
+                                        <div class="d-flex align-items-center">
+                                            <span class="comment-author">Usuario789</span>
+                                            <small class="text-muted ms-2">• hace 3 horas</small>
+                                        </div>
+                                        <p class="mb-1">Lo revisaré esta tarde. Muchas gracias por compartir este tipo de recursos, son muy útiles para todos.</p>
+                                        <div class="d-flex gap-3">
+                                            <small class="text-muted"><i class="far fa-heart me-1"></i> 2</small>
+                                            <small class="text-muted"><i class="far fa-reply me-1"></i> Responder</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Formulario de comentario -->
+                            <div class="mt-3 d-flex">
+                                <img src="/api/placeholder/40/40" class="profile-img me-2" alt="Tu perfil">
+                                <div class="flex-grow-1">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Escribe un comentario..." />
+                                        <button class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Otra Publicación -->
+                <div class="card post-card mt-4">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <img src="/api/placeholder/48/48" class="profile-img me-3" alt="Usuario987">
+                            <div>
+                                <h6 class="mb-0 fw-bold">Usuario987</h6>
+                                <p class="small text-muted mb-0">3 de abril de 2025</p>
+                            </div>
+                        </div>
+                        <h5 class="card-title">Pregunta sobre meditación</h5>
+                        <p class="mt-3">Este es un espacio donde todos podemos apoyarnos mutuamente. ¿Alguien ha probado ejercicios de meditación guiada? Me gustaría saber cuáles recomiendan para principiantes y qué beneficios han experimentado.</p>
+                        
+                        <div class="mt-2 mb-3">
+                            <span class="tag"><i class="fas fa-question me-1"></i> Pregunta</span>
+                            <span class="tag"><i class="fas fa-brain me-1"></i> Meditación</span>
+                        </div>
+                        
+                        <div class="post-actions">
+                            <div class="action-btn">
+                                <i class="far fa-heart"></i>
+                                <span>15 Me gusta</span>
+                            </div>
+                            <div class="action-btn">
+                                <i class="far fa-comment"></i>
+                                <span>8 Comentarios</span>
+                            </div>
+                            <div class="action-btn">
+                                <i class="far fa-bookmark"></i>
+                                <span>Guardar</span>
+                            </div>
+                            <div class="action-btn ms-auto">
+                                <i class="fas fa-share-alt"></i>
+                                <span>Compartir</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Formulario de comentario -->
+                        <div class="mt-3 d-flex">
+                            <img src="/api/placeholder/40/40" class="profile-img me-2" alt="Tu perfil">
+                            <div class="flex-grow-1">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Escribe un comentario..." />
+                                    <button class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Paginación -->
+                <nav class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Siguiente</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="sidebar">
+                    <!-- Perfil de Usuario -->
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <img src="/api/placeholder/80/80" class="rounded-circle mb-3" width="80" height="80" alt="Tu perfil">
+                            <h5 class="card-title">¡Bienvenido/a!</h5>
+                            <p class="text-muted small">Miembro desde: Marzo 2025</p>
+                            <div class="d-grid">
+                                <button class="btn btn-primary"><i class="fas fa-edit me-1"></i> Editar Perfil</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Temas Populares -->
+                    <div class="sidebar-content mb-4">
+                        <h5 class="mb-3"><i class="fas fa-fire me-2"></i>Temas Populares</h5>
+                        <div class="d-flex flex-wrap">
+                            <a href="#" class="tag"><i class="fas fa-brain me-1"></i> Meditación</a>
+                            <a href="#" class="tag"><i class="fas fa-book me-1"></i> Autoayuda</a>
+                            <a href="#" class="tag"><i class="fas fa-leaf me-1"></i> Mindfulness</a>
+                            <a href="#" class="tag"><i class="fas fa-users me-1"></i> Relaciones</a>
+                            <a href="#" class="tag"><i class="fas fa-balance-scale me-1"></i> Equilibrio</a>
+                            <a href="#" class="tag"><i class="fas fa-heart me-1"></i> Bienestar</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Miembros Activos -->
+                    <div class="sidebar-content mb-4">
+                        <h5 class="mb-3"><i class="fas fa-users me-2"></i>Miembros Activos</h5>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="d-flex align-items-center">
+                                <img src="/api/placeholder/32/32" class="rounded-circle me-2" width="32" height="32" alt="Usuario123">
+                                <span>Usuario123</span>
+                            </div>
+                            <span class="badge bg-success">En línea</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="d-flex align-items-center">
+                                <img src="/api/placeholder/32/32" class="rounded-circle me-2" width="32" height="32" alt="Usuario456">
+                                <span>Usuario456</span>
+                            </div>
+                            <span class="badge bg-success">En línea</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="d-flex align-items-center">
+                                <img src="/api/placeholder/32/32" class="rounded-circle me-2" width="32" height="32" alt="Usuario789">
+                                <span>Usuario789</span>
+                            </div>
+                            <span class="badge bg-secondary">Hace 5 min</span>
+                        </div>
+                        <div class="text-center mt-3">
+                            <a href="#" class="btn btn-sm btn-outline-primary">Ver todos (125)</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Próximos Eventos -->
+                    <div class="sidebar-content mb-4">
+                        <h5 class="mb-3"><i class="fas fa-calendar-alt me-2"></i>Próximos Eventos</h5>
+                        <div class="card mb-2">
+                            <div class="card-body p-3">
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="mb-1">Taller de Meditación</h6>
+                                    <span class="badge bg-primary">Online</span>
+                                </div>
+                                <p class="text-muted small mb-2"><i class="far fa-calendar me-1"></i> 15 de abril, 18:00h</p>
+                                <div class="d-grid">
+                                    <button class="btn btn-sm btn-outline-primary">Me interesa</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body p-3">
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="mb-1">Webinar: Autoconocimiento</h6>
+                                    <span class="badge bg-primary">Online</span>
+                                </div>
+                                <p class="text-muted small mb-2"><i class="far fa-calendar me-1"></i> 20 de abril, 19:30h</p>
+                                <div class="d-grid">
+                                    <button class="btn btn-sm btn-outline-primary">Me interesa</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recursos Destacados -->
+                    <div class="sidebar-content">
+                        <h5 class="mb-3"><i class="fas fa-star me-2"></i>Recursos Destacados</h5>
+                        <ul class="list-group list-group-flush">
+                            <!-- Recurso 1: Video de meditación -->
+                            <li class="list-group-item px-0">
+                                <i class="fab fa-youtube text-danger me-2"></i>
+                                <a href="https://www.youtube.com/watch?v=3oCC4NDgYrY">
+                                    Guía de iniciación a la meditación
+                                </a>
+                            </li>
+                    
+                            <!-- Recurso 2: Libros recomendados -->
+                            <li class="list-group-item px-0">
+                                <i class="fas fa-book text-primary me-2"></i>
+                                <a href="#" target="_blank">
+                                    Libros recomendados para crecimiento personal
+                                </a>
+                            </li>
+                    
+                            <!-- Recurso 3: Podcast -->
+                            <li class="list-group-item px-0">
+                                <i class="fas fa-podcast text-success me-2"></i>
+                                <a href="https://open.spotify.com/show/1TDJJoHWEq7Nbh3yEBOJOj" target="_blank">
+                                    Podcast: Psicología al desnudo
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer py-4 text-center text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5>PsycheKinesis</h5>
+                    <p class="small">Fomentando el crecimiento personal y colectivo a través del diálogo y el aprendizaje continuo.</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5>Navegación</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Inicio</a></li>
+                        <li><a href="#" class="text-white">Acerca de nosotros</a></li>
+                        <li><a href="#" class="text-white">Recursos</a></li>
+                        <li><a href="#" class="text-white">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Conéctate</h5>
+                    <div class="d-flex justify-content-center justify-content-md-start gap-3">
+                        <a href="#" class="text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-3 bg-light">
+            <p class="mb-0">&copy; 2025 PsycheKinesis. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
